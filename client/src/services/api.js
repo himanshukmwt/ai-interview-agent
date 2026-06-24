@@ -6,5 +6,6 @@ const api=axios.create({
 });
 
 export const register=(data)=> api.post("/user/register",data);
+export const login=(data)=>api.post("/user/login",data);
 
 export default api;
