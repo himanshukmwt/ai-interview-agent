@@ -5,7 +5,9 @@ const api=axios.create({
     withCredentials: true,  
 });
 
-export const register=(data)=> api.post("/user/register",data);
-export const login=(data)=>api.post("/user/login",data);
+export const register=(data)=> api.post("/auth/register",data);
+export const login=(data)=>api.post("/auth/login",data);
+export const logout=()=>api.get("/auth/logout")
+export const currentUser=()=>api.get("/user/current-user");
 
 export default api;

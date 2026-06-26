@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../services/api.js";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice.js";
 
 function Login() {
+  const dispatch=useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState({ text: "", type: "" });
@@ -19,6 +22,7 @@ function Login() {
     try {
       setLoading(true);
       const res = await login(formData);
+      dispatch(setUserData(res.data));
       setMessage({ text: res.data.message, type: "success" });
       setTimeout(() => navigate("/"), 1000);
     } catch (err) {
