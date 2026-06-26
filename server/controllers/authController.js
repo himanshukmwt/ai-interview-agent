@@ -51,3 +51,20 @@ export const handleUserLogin= async (req, res)=> {
     console.log(error);
   }
 }
+
+export const handleUserLogout=async(req,res)=>{
+  try{
+        res.clearCookie("uid",{
+          httpOnly:true
+        });
+
+        return res.status(200).json({
+            message: "Logged out successfully",
+          });
+    
+      }catch (err) {
+        return res.status(500).json({
+          message: "Internal Server Error",
+        });
+      }
+}

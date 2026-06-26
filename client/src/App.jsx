@@ -6,7 +6,7 @@ import { currentUser } from "./services/api";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUserData } from "./redux/userSlice";
-import Navbar from "./components/Navbar";
+
 
 function App() {
   const dispatch=useDispatch();
@@ -24,7 +24,7 @@ function App() {
   },[dispatch])
   return (
     <BrowserRouter>
-    <Navbar/>
+  
     <Routes>
       <Route path="/" element={<Home/>}/>
       <Route path="/register" element={<Register/>}/>
