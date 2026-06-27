@@ -6,12 +6,14 @@ import {HiOutlineLogout} from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/api';
 import { setUserData } from '../redux/userSlice';
+import AuthModel from './AuthModel';
 
 function Navbar() {
     const navigate=useNavigate();
     const {userData}=useSelector((state)=>state.user);
     const [showCreditPopup,setShowCreditPopup]=useState(false);
     const [showUserPopup,setShowUserPopup]=useState(false);
+    const [showLogin, setShowLogin]=useState(false);
 
     const dispatch=useDispatch();
     const handleLogout=async()=>{
@@ -36,7 +38,12 @@ function Navbar() {
 
             </div>
             <div className='flex items-center gap-6 relative'>
-                <div onClick={()=>{setShowCreditPopup(!showCreditPopup), setShowUserPopup(false)}} className='relative'>
+                <div onClick={()=>{
+                    if(!userData){
+                        setShowLogin(true);
+                        return;
+                    }
+                    setShowCreditPopup(!showCreditPopup), setShowUserPopup(false)}} className='relative'>
                     <button className='flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-md hover:bg-gray-200 transition'>
                         <BsCoin size={20}/>
                         {userData?.credits || 0}
@@ -49,7 +56,12 @@ function Navbar() {
                     )}
                 </div>
                 <div className='relative'>
-                    <button onClick={()=>{setShowUserPopup(!showUserPopup),setShowCreditPopup(false)}}className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
+                    <button onClick={()=>{
+                         if(!userData){
+                        setShowLogin(true);
+                        return;
+                    }
+                        setShowUserPopup(!showUserPopup),setShowCreditPopup(false)}}className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
                         {userData ? userData?.name.slice(0,1).toUpperCase()
                         : <FaUserAstronaut/>}
                     </button>
@@ -68,6 +80,7 @@ function Navbar() {
             </div>
         </div>
 
+        {showLogin && <AuthModel onClose={()=>setShowLogin(false)}/>}
     </div>
   )
 }

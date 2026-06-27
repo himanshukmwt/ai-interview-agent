@@ -4,8 +4,8 @@ import { login } from "../services/api.js";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice.js";
 
-function Login() {
-  const dispatch=useDispatch();
+function Login({ isModel = false, onSwitchToRegister }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState({ text: "", type: "" });
@@ -35,7 +35,9 @@ function Login() {
     }
   }
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div
+      className={`w-full ${isModel ? "py-4" : "min-h-screen bg-gray-100 flex items-center justify-center px-4"}`}
+    >
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
           Login
@@ -91,9 +93,12 @@ function Login() {
           </div>
           <div>
             Don't have an account?{" "}
-            <Link to="/register" className="text-indigo-600 hover:underline">
+            <span
+              onClick={onSwitchToRegister}
+              className="text-indigo-600 cursor-pointer hover:underline"
+            >
               Register
-            </Link>
+            </span>
           </div>
         </div>
       </div>

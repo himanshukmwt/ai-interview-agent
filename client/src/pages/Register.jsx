@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { register } from "../services/api.js";
 
-function Register() {
+function Register({ isModel = false, onSwitchToLogin }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -10,14 +10,14 @@ function Register() {
     email: "",
     password: "",
   });
-  const[message,setMessage]=useState({text:"", type:""});
+  const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
 
-  const handleChange=(e)=> {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
-  const handleSubmit=async (e)=> {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.name.trim() || !formData.email.trim() || !formData.password) {
@@ -25,7 +25,10 @@ function Register() {
     }
 
     if (formData.password.length < 6) {
-      return setMessage({ text: "Password must hava more than 6 characters", type: "error" });
+      return setMessage({
+        text: "Password must hava more than 6 characters",
+        type: "error",
+      });
     }
 
     try {
@@ -35,30 +38,34 @@ function Register() {
         email: formData.email,
         password: formData.password,
       });
-       setMessage({ text: res.data.message, type: "success" });
+      setMessage({ text: res.data.message, type: "success" });
 
       setTimeout(() => {
         navigate("/login");
       }, 1000);
     } catch (err) {
       setMessage({
-          text: err.response?.data?.message || "Something went wrong..",
-          type: "error",
+        text: err.response?.data?.message || "Something went wrong..",
+        type: "error",
       });
       console.log(err);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div
+      className={`w-full ${isModel ? "py-4" : "min-h-screen bg-gray-100 flex items-center justify-center px-4"}`}
+    >
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Register</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+          Register
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div >
-            <label className="block text-sm text-gray-600 mb-1" >Name</label>
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Name</label>
             <input
               type="text"
               name="name"
@@ -69,7 +76,7 @@ function Register() {
             />
           </div>
 
-          <div >
+          <div>
             <label className="block text-sm text-gray-600 mb-1">Email</label>
             <input
               type="email"
@@ -78,11 +85,10 @@ function Register() {
               value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-          
             />
           </div>
 
-          <div >
+          <div>
             <label className="block text-sm text-gray-600 mb-1">Password</label>
             <input
               type="password"
@@ -95,25 +101,34 @@ function Register() {
           </div>
 
           {message.text && (
-            <div className={`text-sm text-center px-4 py-2 rounded-lg ${
-              message.type === "success"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            }`}>
+            <div
+              className={`text-sm text-center px-4 py-2 rounded-lg ${
+                message.type === "success"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
               {message.text}
             </div>
           )}
 
-          <button type="submit" disabled={loading} className="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
+          >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
-
-
         <div className="mt-4 text-center text-sm text-gray-500">
           Already have an account?{""}
-          <Link to="/login"  className="text-indigo-600 hover:underline">sign in</Link>
+          <span
+            onClick={onSwitchToLogin}
+            className="text-indigo-600 cursor-pointer hover:underline"
+          >
+            sign in
+          </span>
         </div>
       </div>
     </div>
