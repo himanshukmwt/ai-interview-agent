@@ -6,7 +6,7 @@ import { currentUser } from "./services/api";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUserData } from "./redux/userSlice";
-
+import InterviewPage from "./pages/InterviewPage"
 
 function App() {
   const dispatch=useDispatch();
@@ -29,6 +29,7 @@ function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login />} />
+      <Route path="/interview" element={<InterviewPage/>}/>
     </Routes>
     </BrowserRouter>
   )
