@@ -33,7 +33,7 @@ export const analyzeresume=async(req,res)=>{
                 content:`
                 Extract structured data from resume.
 
-                Return strictly JSON:
+                 Return strictly JSON:
 
                 {
                   "role":"string",
@@ -51,7 +51,12 @@ export const analyzeresume=async(req,res)=>{
 
          const aiResponse = await askAI(messages);
 
-         const parsed= JSON.parse(aiResponse);
+         const cleanResponse = aiResponse
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+
+const parsed = JSON.parse(cleanResponse);
 
          fs.unlinkSync(filepath);
 
