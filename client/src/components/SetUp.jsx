@@ -9,9 +9,16 @@ import {
 } from "react-icons/fa";
 
 function SetUp({onStart}) {
-  const [role,setrole]=useState("");
+  const [role,setRole]=useState("");
   const [experience, setExperience]=useState("");
   const [mode,setMode]=useState("Technical");
+  const [resumeFile, setResumeFile] = useState(null);
+const [loading, setLoading] = useState(false);
+const [projects, setProjects] = useState([]);
+const [skills, setSkills] = useState([]);
+const [resumeText, setResumeText] = useState("");
+const [analysisDone, setAnalysisDone] = useState(false);
+const [analyzing, setAnalyzing] = useState(false);
 
   return (
     <motion.div
@@ -65,7 +72,55 @@ function SetUp({onStart}) {
       </div>
     </motion.div>
 
+    <motion.div
+     initial={{ x: 80,opacity: 0 }}
+  animate={{ x:0,opacity: 1 }}
+  transition={{ duration: 0.8 }} 
+  className="p-12 bg-amber-50"
+    >
+     <h2 className="font-3xl font-bold text-gray-800 mb-8">
+      Interview SetUp
+      </h2> 
+      <div className="space-y-6">
+        <div className="relative">
+          <FaUserTie className="absolute top-4 left-4 text-gray-400"/>
+          <input type='text' placeholder="Enter role"
+          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition"
+          onChange={(e)=>setRole(e.target.val)} value={role}/>
 
+        </div>
+
+        <div className="relative">
+          <FaBriefcase className="absolute top-4 left-4 text-gray-400"/>
+          <input type='text' placeholder="Experience (e.g 3 years)"
+          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition"
+          onChange={(e)=>setExperience(e.target.val)} value={experience}/>
+
+        </div>
+
+          <select value={mode}
+          onChange={(e)=>setMode(e.target.value)}
+          className="w-full py-3 px-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition text-gray-600">
+              <option value="Technical">Technical Interview</option>
+              <option value="HR">HR Interview</option>
+          </select>
+
+          {!analysisDone && (
+            <motion.div 
+              onClick={()=>document.getElementById("resumeUpload").click()}
+            className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 hover:border-blue-100 transition">
+                <FaFileUpload className="text-4xl mx-auto text-blue-300 mb-3"/>
+                <input type="file" accept="application/pdf" id="resumeUpload" className="hidden"
+                  onChange={(e)=>setResumeFile(e.target.files[0])}
+                />
+                <p className="text-gray-500 font-medium">
+                  {resumeFile ? resumeFile.name : "Click to upload resume"}
+                </p>
+            </motion.div>
+          )}
+      </div>
+
+    </motion.div>
   </div>
 </motion.div>
   )
