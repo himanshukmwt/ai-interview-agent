@@ -69,7 +69,7 @@ const interviewSchema=new mongoose.Schema({
     resumeText:{
         type:String,
     },
-    question:[questionSchema],
+    questions:[questionSchema],
 
     finalScore:{
         type:Number,
