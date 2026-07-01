@@ -9,12 +9,11 @@ const questionSchema = new mongoose.Schema({
     difficulty: {
         type: String,
         enum: ["Easy", "Medium", "Hard"],
-        required: true,
+
     },
 
     timeLimit: {
         type: Number, 
-        default: 60,
     },
 
     answer: {
@@ -35,22 +34,16 @@ const questionSchema = new mongoose.Schema({
     confidence: {
         type: Number,
         default: 0,
-        min: 0,
-        max: 100,
     },
 
     communication: {
         type: Number,
         default: 0,
-        min: 0,
-        max: 100,
     },
 
     correctness: {
         type: Number,
         default: 0,
-        min: 0,
-        max: 100,
     },
 });
 
@@ -77,5 +70,19 @@ const interviewSchema=new mongoose.Schema({
         type:String,
     },
     question:[questionSchema],
+
+    finalScore:{
+        type:Number,
+        default:0,
+    },
+    status:{
+        type:String,
+        enum:["Incompleted", "Completed"],
+        default:"Incompleted",
+    },
     
 },{timestamps:true});
+
+const Interview=mongoose.model("Interview",interviewSchema);
+
+export default Interview;
