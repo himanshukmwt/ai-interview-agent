@@ -7,9 +7,13 @@ import {
   FaMicrophoneAlt,
   FaChartLine,
 } from "react-icons/fa";
-import { resumeUPLOAD } from "../services/api";
+import { resumeUPLOAD, startInterview } from "../services/api";
+import { useDispatch,useSelector } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 function SetUp({ onStart }) {
+  const userData=useSelector((state)=>state.action);
+  const dispatch=useDispatch();
   const [role, setRole] = useState("");
   const [experience, setExperience] = useState("");
   const [mode, setMode] = useState("Technical");
@@ -45,6 +49,23 @@ function SetUp({ onStart }) {
       setAnalyzing(false);
     }
   };
+
+  const handleStart=async()=>{
+    setLoading(true);
+    try{
+      const result=await startInterview({role,experience,mode,resumeText,projects,skills});
+      console.log(result.data);
+      if(userData){
+        dispatch(setUserData({...userData, credits:result.data.creditLeft}));
+      }
+      setLoading(false);
+      onStart(result.data);
+    }catch(error){
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
+  }
 
   return (
     <motion.div
@@ -209,12 +230,13 @@ function SetUp({ onStart }) {
               </motion.div>
             )}
             <motion.button
-              disabled={!role || !experience}
+            onClick={handleStart}
+              disabled={!role || !experience || loading}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               className="w-full disabled:bg-gray-600 bg-blue-400 hover:bg-blue-500 text-white py-2.5 rounded-full text-lg font-semibold transition duration-300 shadow-md"
             >
-              Start Interview
+              {loading ? "Starting...":"Start Interview"}
             </motion.button>
           </div>
         </motion.div>

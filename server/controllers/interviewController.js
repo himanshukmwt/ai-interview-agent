@@ -81,19 +81,20 @@ export const analyzeresume = async (req, res) => {
 
 export const generateQuestion = async (req, res) => {
   try {
-    const { role, experience, mode, resumeText, projects, skills } = req.body;
+    let { role, experience, mode, resumeText, projects, skills } = req.body;
     role = role?.trim();
     experience = experience?.trim();
     mode = mode?.trim();
 
+    
     if (!role || !experience || !mode) {
       return res
         .status(400)
         .json({ message: "Role,Experience and Mode are required" });
     }
 
-    const user = await User.findById(req._id);
-
+    const user = await User.findById(req.user._id);
+  
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -101,14 +102,14 @@ export const generateQuestion = async (req, res) => {
     if (user.credits < 1) {
       return res.status(400).json({ message: "Not enough credits." });
     }
-
+    
     const projectText =
       Array.isArray(projects) && projects.length ? projects.join(", ") : "None";
 
     const skillsText =
       Array.isArray(skills) && skills.length ? skills.join(", ") : "None";
 
-    const safeResume = resumeText.trim() || "None";
+    const safeResume = resumeText?.trim() || "None";
 
     const userPrompt = `
         Role:${role}
@@ -126,8 +127,7 @@ export const generateQuestion = async (req, res) => {
     const messages = [
       {
         role: "system",
-        context: `
-
+        content: `
                 Speak in simple, natural English as if you are directly talking to the candidate.
 
                 Generate exactly 5 interview questions.
@@ -150,7 +150,7 @@ export const generateQuestion = async (req, res) => {
                 Question 5 → hard
 
                 Make questions based on the candidate's role, experience,interviewMode, projects, skills, and resume details.
-                `,
+                `
       },
       {
         role: "user",
@@ -168,7 +168,7 @@ export const generateQuestion = async (req, res) => {
       .split("\n")
       .map((q) => q.trim())
       .filter((q) => q.length > 0)
-      .silce(0, 5);
+      .slice(0, 5);
 
     if (questionsArray.length === 0) {
       return res.status(500).json({ message: "Failed to generate questions" });
