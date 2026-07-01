@@ -176,7 +176,7 @@ function SetUp({ onStart }) {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-4"
+                className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-2"
               >
                 <h3 className="text-lg font-semibold text-gray-800">
                   Resume Analysis Result
