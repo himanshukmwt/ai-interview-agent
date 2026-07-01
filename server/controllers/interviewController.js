@@ -99,7 +99,7 @@ export const generateQuestion = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (user.credits < 1) {
+    if (user.credits < -100) {
       return res.status(400).json({ message: "Not enough credits." });
     }
     

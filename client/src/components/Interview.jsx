@@ -1,7 +1,42 @@
+import maleVideo from "../assets/videos/male-ai.mp4";
+import femaleVideo from "../assets/videos/female-ai.mp4";
+import Timer from "./Timer";
 
 function Interview({interviewData, onFinish}) {
+  // const {interviewId, questions,userName}=interviewData;
+
+
+
   return (
-    <div>interview</div>
+    <div className="min-h-screen bg-linear-to-br from-indigo-300 via-white to-purple-300 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-350 min-h-[80vh] bg-white rounded-3xl shadow-2xl border border-gray-200 flex flex-col lg:flex-row overflow-hidden">
+
+          {/* video section */}
+          <div className="w-full lg-w-[35%] bg-white flex flex-col items-center p-6 space-y-6 border-r border-gray-200">
+            <div  className="w-full max-w-md rounded-2xl overflow-hidden shadow-xl">
+            <video src={femaleVideo}
+            className="w-full h-auto object-cover"
+            />
+          </div>
+
+          {/* timer */}
+          <div className="w-full max-w-md bg-white border border-gary-200 rounded-2xl shadow-md p-6 space-y-5">
+              <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">
+                    Interview Status
+                  </span>
+                  <span className="text-sm font-semibold text-indigo-400"> 
+                      AI Speaking
+                  </span>
+              </div>
+              <div className="h-px bg-gray-200"></div>
+
+              <div className="flex justify-center">
+                  <Timer timeLeft="30" totalTime="60"/>
+              </div>
+          </div>
+</div></div>
+    </div>
   )
 }
 
