@@ -364,3 +364,16 @@ export const finishInterview = async (req, res) => {
     return res.status(500).json({ message: error });
   }
 };
+
+
+export const getMyInterviews=async()=>{
+  try {
+    const interviews=await Interview.findOne({userId:req.userId})
+    .sort({createdAt:-1})
+    .select("role experience mode finalScore status createdAt");
+
+    return res.status(200).json(interviews);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};
