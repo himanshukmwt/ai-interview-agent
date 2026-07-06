@@ -11,5 +11,6 @@ export const logout=()=>api.post("/auth/logout")
 export const currentUser=()=>api.get("/user/current-user");
 export const resumeUPLOAD=(data)=>api.post("/interview/resume",data);
 export const startInterview=(data)=>api.post("/interview/generate-questions",data);
+export const submitAns=(data)=>api.post("/interview/submit-answer",data);
 
 export default api;

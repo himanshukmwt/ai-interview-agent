@@ -2,8 +2,9 @@ import maleVideo from "../assets/videos/male-ai.mp4";
 import femaleVideo from "../assets/videos/female-ai.mp4";
 import { motion } from "motion/react";
 import Timer from "./Timer";
-import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import { FaArrowLeft, FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
+import { submitAns } from "../services/api";
 
 function Interview({ interviewData, onFinish }) {
   const {interviewId, questions,userName}=interviewData;
@@ -96,6 +97,7 @@ function Interview({ interviewData, onFinish }) {
 
       utterance.onstart = () => {
         setIsAIPlaying(true);
+        stopMic();
         videoRef.current?.play();
       };
 
@@ -104,6 +106,9 @@ function Interview({ interviewData, onFinish }) {
         videoRef.current.currntTime =0;
         setIsAIPlaying(false);
       
+        if(isMicOn){
+          startMic();
+        }
 
       setTimeout(()=>{
         setSubtitle("");
@@ -137,10 +142,118 @@ function Interview({ interviewData, onFinish }) {
         await speakText("Alright, this one might be a bit more challenging");
       }
       await speakText(currentQuestion.question);
+
+      if(isMicOn){
+          startMic();
+        }
     }
   }
   runIntro();
-  },[selectedVoice , isIntroPhase , currentIndex])
+  },[selectedVoice , isIntroPhase , currentIndex]);
+
+  useEffect(()=>{
+    if(isIntroPhase)return;
+    if(!currentQuestion)return;
+    if(isSubmitting)return;
+
+    const timer=setInterval(()=>{
+      setTimeLeft((prev)=>{
+        if(prev<=1){
+          clearInterval(timer);
+          return 0;
+        }
+        return prev-1;
+      })
+    },1000);
+
+    return ()=>clearInterval(timer);
+  },[isIntroPhase, currentIndex,isSubmitting]);
+
+
+  useEffect(() => {
+  if (!("webkitSpeechRecognition" in window)) return;
+
+  const recognition = new window.webkitSpeechRecognition();
+
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  recognition.onresult = (event) => {
+    const transcript =
+      event.results[event.results.length - 1][0].transcript;
+
+    setAnswer((prev) => prev + " " + transcript);
+  };
+
+  recognitionRef.current = recognition;
+}, []);
+
+
+const startMic=()=>{
+  if(recognitionRef.current && !isAIPlaying){
+    try {
+      recognitionRef.current.start();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+const stopMic=()=>{
+  if(recognitionRef.current){
+    recognitionRef.current.stop();
+  }
+}
+
+const toggleMic=()=>{
+  if(isMicOn){
+    stopMic();
+  }
+  else{
+    startMic();
+  }
+  setIsMicOn(!isMicOn);
+};
+
+const submitAnswer=async()=>{
+  if(isSubmitting)return;
+  stopMic();
+  setIsSubmitting(true);
+
+  try{
+    const result = await submitAns({
+      interviewId,
+      questionIndex:currentIndex,
+      answer,
+      timeTaken: currentQuestion.timeLimit-timeLeft
+    });
+    setFeedback(result.data.feedback);
+    speakText(result.data.feedback);
+    setIsSubmitting(false);
+  }catch(error){
+    console.log(error);
+    setIsSubmitting(false);
+  }
+};
+
+const handleNext=async()=>{
+  setAnswer("");
+  setFeedback("");
+
+  if(currentIndex +1 >=questions.length){
+    finishInterview();
+    return;
+  }
+
+  await speakText("Alright,let's move to the next question.")
+
+  setCurrentIndex(currentIndex+1);
+  setTimeout(()=>{
+    if(isMicOn)startMic();
+  },500);
+};
+
 
 
   return (
@@ -181,7 +294,7 @@ function Interview({ interviewData, onFinish }) {
             <div className="h-px bg-gray-200"></div>
 
             <div className="flex justify-center">
-              <Timer timeLeft="30" totalTime="60" />
+              <Timer timeLeft={timeLeft} totalTime={currentQuestion?.timeLimit} />
             </div>
 
             <div className="h-px bg-gray-200"></div>
@@ -205,33 +318,49 @@ function Interview({ interviewData, onFinish }) {
             AI Interview Assistant
           </h2>
 
-          <div className="relative mb-6 bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm">
+          {!isIntroPhase && (<div className="relative mb-6 bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm">
             <p className="text-xs sm:text-sm text-gray-400 mb-2">
               Question {currentIndex+1} of {questions.length}
             </p>
             <div className="text-base sm:text-lg font-semibold text-gray-800  leading-relaxed">
               {currentQuestion?.question}
             </div>
-          </div>
+          </div>)}
+
           <textarea
             placeholder="Type your answer here..."
+            onChange={(e)=>setAnswer(e.target.value)}
+            value={answer}
             className="flex-1 bg-gray-100 p-4 sm:p-6 rounded-2xl resize-none outline-none border border-gray-200 focus:ring-2 focus:ring-indigo-500 transition text-gray-800"
           />
 
-          <div className="flex items-center gap-4 mt-6">
+          {!feedback ? (<div className="flex items-center gap-4 mt-6">
             <motion.button
+            onClick={toggleMic}
               whileTap={{ scale: 0.98 }}
               className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black text-white shadow-lg"
             >
-              <FaMicrophone size={20}/>
+             {isMicOn? <FaMicrophone size={20}/>:<FaMicrophoneSlash size={20}/>} 
             </motion.button>
             <motion.button 
+            onClick={submitAnswer}
+            disabled={isSubmitting}
             whileTap={{ scale: 0.95 }}
-            className="flex-1 bg-indigo-400 text-white py-3 sm:py-4 rounded-2xl shadow-lg hover:opacity-90 transition font-semibold cursor-pointer">
-              Submit Answer
+            className="flex-1 bg-indigo-400 text-white py-3 sm:py-4 rounded-2xl shadow-lg hover:opacity-90 transition font-semibold cursor-pointer disabled:bg-gray-500">
+              {isSubmitting?"Submitting...":"Submit Answer"}
             </motion.button>
 
-          </div>
+          </div>):(
+            <motion.div
+            initial={{opacity:0}}
+            animate={{opacity:1}}
+            className="mt-6 bg-amber-100 border border-indigo-400 p-5 rounded-2xl shadow-sm">
+                <p className="text-gray-700 font-medium mb-4">{feedback}</p>
+                <button className="w-full bg-blue-400 text-white py-3 rounded-xl flex items-center justify-center gap-1 shadow-md hover:opacity-90 transition ">
+                  Next Question <FaArrowLeft size={18}/>
+                </button>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>
