@@ -2,9 +2,9 @@ import maleVideo from "../assets/videos/male-ai.mp4";
 import femaleVideo from "../assets/videos/female-ai.mp4";
 import { motion } from "motion/react";
 import Timer from "./Timer";
-import { FaArrowLeft, FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import {  FaArrowRight, FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
-import { submitAns } from "../services/api";
+import { finishInterview, submitAns } from "../services/api";
 
 function Interview({ interviewData, onFinish }) {
   const {interviewId, questions,userName}=interviewData;
@@ -73,6 +73,22 @@ function Interview({ interviewData, onFinish }) {
 
   const videoSource=voiceGender==="male"?maleVideo:femaleVideo;
 
+
+  const startMic=()=>{
+  if(recognitionRef.current && !isAIPlaying){
+    try {
+      recognitionRef.current.start();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+const stopMic=()=>{
+  if(recognitionRef.current){
+    recognitionRef.current.stop();
+  }
+}
   //speak function
   const speakText=(text)=>{
     return new Promise((resolve)=>{
@@ -143,9 +159,9 @@ function Interview({ interviewData, onFinish }) {
       }
       await speakText(currentQuestion.question);
 
-      if(isMicOn){
-          startMic();
-        }
+      // if(isMicOn){
+      //     startMic();
+      //   }
     }
   }
   runIntro();
@@ -154,7 +170,7 @@ function Interview({ interviewData, onFinish }) {
   useEffect(()=>{
     if(isIntroPhase)return;
     if(!currentQuestion)return;
-    if(isSubmitting)return;
+    // if(isSubmitting)return;
 
     const timer=setInterval(()=>{
       setTimeLeft((prev)=>{
@@ -167,7 +183,13 @@ function Interview({ interviewData, onFinish }) {
     },1000);
 
     return ()=>clearInterval(timer);
-  },[isIntroPhase, currentIndex,isSubmitting]);
+  },[isIntroPhase, currentIndex]);
+
+  useEffect(() => {
+  if (!isIntroPhase && currentQuestion) {
+    setTimeLeft(currentQuestion.timeLimit || 60);
+  }
+}, [currentIndex]);
 
 
   useEffect(() => {
@@ -190,21 +212,7 @@ function Interview({ interviewData, onFinish }) {
 }, []);
 
 
-const startMic=()=>{
-  if(recognitionRef.current && !isAIPlaying){
-    try {
-      recognitionRef.current.start();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
 
-const stopMic=()=>{
-  if(recognitionRef.current){
-    recognitionRef.current.stop();
-  }
-}
 
 const toggleMic=()=>{
   if(isMicOn){
@@ -242,17 +250,51 @@ const handleNext=async()=>{
   setFeedback("");
 
   if(currentIndex +1 >=questions.length){
-    finishInterview();
+    finishInter();
     return;
   }
 
   await speakText("Alright,let's move to the next question.")
 
   setCurrentIndex(currentIndex+1);
-  setTimeout(()=>{
-    if(isMicOn)startMic();
-  },500);
+  // setTimeout(()=>{
+  //   if(isMicOn)startMic();
+  // },500);
 };
+
+const finishInter=async()=>{
+  stopMic();
+  setIsMicOn(false);
+  try{
+    const result=await finishInterview({
+      interviewId
+    });
+
+    console.log(result.data);
+    onFinish(result.data);
+  }catch(error){
+    console.log(error);
+  }
+};
+
+useEffect(()=>{
+  if(isIntroPhase)return;
+  if(!currentQuestion)return;
+
+  if(timeLeft===0 && !isSubmitting && !feedback){
+    submitAnswer();
+  }
+},[timeLeft]);
+
+useEffect(()=>{
+  return ()=>{
+    if(recognitionRef.current){
+      recognitionRef.current.stop();
+      recognitionRef.current.abort();
+    }
+    window.speechSynthesis.cancel();
+  };
+},[]);
 
 
 
@@ -356,8 +398,10 @@ const handleNext=async()=>{
             animate={{opacity:1}}
             className="mt-6 bg-amber-100 border border-indigo-400 p-5 rounded-2xl shadow-sm">
                 <p className="text-gray-700 font-medium mb-4">{feedback}</p>
-                <button className="w-full bg-blue-400 text-white py-3 rounded-xl flex items-center justify-center gap-1 shadow-md hover:opacity-90 transition ">
-                  Next Question <FaArrowLeft size={18}/>
+                <button 
+                onClick={handleNext}
+                className="w-full bg-blue-400 text-white py-3 rounded-xl flex items-center justify-center gap-1 shadow-md hover:opacity-90 transition ">
+                  Next Question <FaArrowRight size={18}/>
                 </button>
             </motion.div>
           )}
