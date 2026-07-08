@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {motion} from 'motion/react';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 function Report({ report }) {
   const navigate = useNavigate();
@@ -144,7 +145,39 @@ function Report({ report }) {
         </div>
 
 
-        <div></div>
+        <div className="lg:col-span-2 space-y-6">
+          <motion.div
+          initial={{opacity:0}}
+            animate={{opacity:1}}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-8"
+            >
+              <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6">
+                Preformance Trend
+              </h3>
+
+              <div className="h-64 sm:h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={questionData}>
+                  <CartesianGrid strokeDasharray="3 3"/>
+                    <XAxis dataKey="name"/>
+                    <YAxis domain={[0, 10]}/>
+                    <Tooltip/>
+                    <Area
+                      type="monotone"
+                      dataKey="score"
+                      stroke="#22c55e"
+                      fill="#bbf7d0"
+                      strokeWidth={3}
+                    />
+
+                
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+          </motion.div>
+
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SetUp from "../components/SetUp";
-import Interview from "../components/interview";
-import Report from "../components/report ";
+import Interview from "../components/Interview";
+import Report from "../components/Report";
 
 function InterviewPage() {
     const [step,setStep]=useState(1);
