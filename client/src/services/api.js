@@ -14,6 +14,6 @@ export const startInterview=(data)=>api.post("/interview/generate-questions",dat
 export const submitAns=(data)=>api.post("/interview/submit-answer",data);
 export const finishInterview=(data)=>api.post("/interview/finish",data);
 export const getMyInterviews=()=>api.get("/interview/get-interview");
-export const getInterviewReport=()=>api.get("/interview/report/:id");
+export const getInterviewReport=(id)=>api.get(`/interview/report/${id}`);
 
 export default api;

@@ -33,7 +33,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/interview" element={<InterviewPage/>}/>
       <Route path="/history" element={<InterviewHistory/>}/>
-      <Route path="/report" element={<InterviewReport/>}/>
+      <Route path="/report/:id" element={<InterviewReport/>}/>
     </Routes>
     </BrowserRouter>
   )
