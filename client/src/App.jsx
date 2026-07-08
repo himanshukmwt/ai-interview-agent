@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUserData } from "./redux/userSlice";
 import InterviewPage from "./pages/InterviewPage"
+import InterviewHistory from "./pages/InterviewHistory";
+import InterviewReport from "./pages/InterviewReport";
 
 function App() {
   const dispatch=useDispatch();
@@ -30,6 +32,8 @@ function App() {
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/interview" element={<InterviewPage/>}/>
+      <Route path="/history" element={<InterviewHistory/>}/>
+      <Route path="/report" element={<InterviewReport/>}/>
     </Routes>
     </BrowserRouter>
   )

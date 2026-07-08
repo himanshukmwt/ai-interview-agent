@@ -368,7 +368,7 @@ export const finishInterview = async (req, res) => {
 
 export const getMyInterviews=async(req,res)=>{
   try {
-    const interviews=await Interview.findOne({userId:req.userId})
+    const interviews=await Interview.find({userId:req.user._id})
     .sort({createdAt:-1})
     .select("role experience mode finalScore status createdAt");
 
