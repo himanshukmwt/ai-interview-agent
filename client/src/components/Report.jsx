@@ -177,6 +177,57 @@ function Report({ report }) {
 
           </motion.div>
 
+          <motion.div
+          initial={{opacity:0}}
+            animate={{opacity:1}}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-8"
+          >
+            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6">
+                Questions
+              </h3>
+              <div className="space-y-6">
+                {
+                  questionWiseScore.map((q,i)=>(
+                    <div key={i} className="bg-gray-50 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+                            <div>
+                              <p className="text-xs text-gray-400">
+                                Question {i+1}
+                              </p>
+
+                              <p className="font-semibold text-gray-800 text-sm sm:text-base leading-relaxed">
+                                {q.question || "Question not available"}
+                              </p>
+
+                            </div>
+                            <div className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-bold text-xs sm:text-sm w-fit">
+                              {q.score ?? 0}/10
+                            </div>
+                            </div>
+
+                            <div className="bg-blue-50 border border-indigo-200 p-4 rounded-lg">
+                              <p className="text-xs text-blue-500 font-semibold mb-1">
+                                Feedback
+                              </p>
+
+                              <p className="text-sm text-gray leading-relaxed">
+
+                                {q.feedback && q.feedback.trim() !== ""
+                                  ? q.feedback
+                                  : "No feedback available"
+                                }
+
+                              </p>
+                            </div>
+                    </div>
+                  ))
+                }
+
+              </div>
+
+
+          </motion.div>
+
         </div>
       </div>
     </div>
