@@ -154,7 +154,7 @@ function SetUp({ onStart }) {
             <select
               value={mode}
               onChange={(e) => setMode(e.target.value)}
-              className="w-full py-3 px-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition text-gray-600"
+              className="w-full py-3 px-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition text-gray-600 cursor-pointer"
             >
               <option value="Technical">Technical Interview</option>
               <option value="HR">HR Interview</option>
@@ -234,7 +234,7 @@ function SetUp({ onStart }) {
               disabled={!role || !experience || loading}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full disabled:bg-gray-600 bg-blue-400 hover:bg-blue-500 text-white py-2.5 rounded-full text-lg font-semibold transition duration-300 shadow-md"
+              className="w-full disabled:bg-gray-500 bg-blue-400 hover:bg-blue-500 text-white py-2.5 rounded-full text-lg font-semibold transition duration-300 shadow-md cursor-pointer"
             >
               {loading ? "Starting...":"Start Interview"}
             </motion.button>
