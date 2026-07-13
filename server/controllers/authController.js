@@ -1,6 +1,9 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { setUser } from "../services/authServices.js";
+const { OAuth2Client } = require("google-auth-library");
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const handleUserSignup= async(req, res) =>{
   try {
@@ -67,4 +70,58 @@ export const handleUserLogout=async(req,res)=>{
           message: "Internal Server Error",
         });
       }
+};
+
+export const googleLogin=async(res,res)=>{
+  try{
+    const {token}=req.body;
+
+    const ticket=await client.verifyIdToken({
+      idToken:token,
+      audience:process.env.GOOGLE_CLIENT_ID
+    });
+
+    const payload=ticket.getPayload();
+
+    const{sub:googleId,email,name,picture}=payload;
+
+    let user=await User.findOne({email});
+
+    if(!user){
+      user=await User.create({
+        name,
+        email,
+        googleId,
+        profilePicture:picture,
+        authProvider:"google"
+      })
+    }
+    else if(user && !user.googleId){
+      user.googleId=googleId;
+      user.authProvider="google";
+
+      await user.save();
+    }
+  
+
+  const appToken = setUser(user);
+
+  res.cookie("uid", appToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+  res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePicture: user.profilePicture,
+      },
+    });
+
+  }catch (error) {
+    console.error("Google auth error:", error);
+    res.status(401).json({ message: "Google authentication failed" });
+  }
 }
