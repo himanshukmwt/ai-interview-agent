@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { setUser } from "../services/authServices.js";
-const { OAuth2Client } = require("google-auth-library");
+import { OAuth2Client } from "google-auth-library";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -72,9 +72,10 @@ export const handleUserLogout=async(req,res)=>{
       }
 };
 
-export const googleLogin=async(res,res)=>{
+export const googleLogin=async(req,res)=>{
   try{
     const {token}=req.body;
+    
 
     const ticket=await client.verifyIdToken({
       idToken:token,

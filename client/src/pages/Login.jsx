@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { login } from "../services/api.js";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice.js";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 function Login({ isModel = false, onSwitchToRegister }) {
   const dispatch = useDispatch();
@@ -82,6 +83,15 @@ function Login({ isModel = false, onSwitchToRegister }) {
             {loading ? "Loging..." : "Login"}
           </button>
         </form>
+
+          <div className="my-4 flex items-center">
+            <div className="flex-1 border-t"></div>
+            <span className="px-3 text-gray-500">OR</span>
+            <div className="flex-1 border-t"></div>
+          </div>
+
+          <GoogleLoginButton />
+
         <div className="mt-4 text-center text-sm text-gray-500 space-y-2">
           <div>
             <Link
