@@ -26,7 +26,7 @@ function Interview({ interviewData, onFinish }) {
   const [voiceGender, setVoiceGender] = useState("female");
   const [subtitle, setSubtitle] = useState("");
 
-  const videoRef=useRef(null);
+  
   const currentQuestion=questions[currentIndex];
 
 
