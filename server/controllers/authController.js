@@ -125,4 +125,5 @@ export const googleLogin=async(req,res)=>{
     console.error("Google auth error:", error);
     res.status(401).json({ message: "Google authentication failed" });
   }
-}
+};
+

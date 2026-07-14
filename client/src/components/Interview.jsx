@@ -20,7 +20,7 @@ function Interview({ interviewData, onFinish }) {
   const [timeLeft, setTimeLeft] = useState(
     questions[0]?.timeLimit || 60
   );
-
+  const videoRef = useRef(null);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [voiceGender, setVoiceGender] = useState("female");
