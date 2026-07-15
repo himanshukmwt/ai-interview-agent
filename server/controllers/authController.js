@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { setUser } from "../services/authServices.js";
 import { OAuth2Client } from "google-auth-library";
+import { sendOtpEmail } from "../config/mailer.js";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -114,7 +115,6 @@ export const googleLogin=async(req,res)=>{
 
   res.status(200).json({
       user: {
-        id: user._id,
         name: user.name,
         email: user.email,
         profilePicture: user.profilePicture,
@@ -126,4 +126,29 @@ export const googleLogin=async(req,res)=>{
     res.status(401).json({ message: "Google authentication failed" });
   }
 };
+
+export const forgetPassword=async(req,res)=>{
+  try{
+    const {email}=req.body;
+
+    const user=await User.findOne({email});
+
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+    }
+
+    const otp=Math.floor(100000+ Math.random() * 900000);
+    const otpExpiry=new Date(Date.now()+ 10*60*1000);
+
+    user.resetOtp = otp;
+    user.resetOtpExpiry = otpExpiry;
+    await user.save();
+
+    await sendOtpEmail(email,otp);
+    res.status(200).json({ message: "OTP sent to your email" });
+  }catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+}
 

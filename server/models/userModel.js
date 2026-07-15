@@ -30,7 +30,13 @@ const userSchema = new mongoose.Schema({
     credits:{
         type:Number,
         default:5
-    }
+    },
+    resetOtp: {
+        type: Number,
+    },
+    resetOtpExpiry: {
+        type: Date,
+    },
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
