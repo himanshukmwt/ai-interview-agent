@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-import { setUser } from "../services/authServices.js";
+import { getUser, setUser } from "../services/authServices.js";
 import { OAuth2Client } from "google-auth-library";
 import { sendOtpEmail } from "../config/mailer.js";
 
@@ -183,5 +183,44 @@ export const verifyOtp=async(req,res)=>{
   }
 };
 
+export const resetPassword=async(req,res)=>{
+  try{
+    const {resetToken,newPassword}=req.body;
+
+    if (!resetToken || !newPassword) {
+      return res.status(400).json({
+        message: "Reset token and new password are required",
+      });
+    }
+
+    const decoded=getUser(resetToken);
+
+    const user=await User.findById(decoded._id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const hashedPassword=await bcrypt.hash(newPassword,10);
+
+    user.password=hashedPassword;
+    user.resetOtp=undefined;
+    user.resetOtpExpiry=undefined;
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Password reset successful",
+    });
+  }catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      message: "Invalid reset token",
+    });
+  }
+}
 
 
