@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice.js";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 
-function Login({ isModel = false, onSwitchToRegister }) {
+function Login({ isModel = false, onSwitchToRegister, onForgotPassword }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -94,12 +94,18 @@ function Login({ isModel = false, onSwitchToRegister }) {
 
         <div className="mt-4 text-center text-sm text-gray-500 space-y-2">
           <div>
-            <Link
-              to="/forgotPassword"
+            {/* <Link
+              to="/forgot-password"
               className="text-indigo-600 hover:underline"
             >
               Forgot Password?
-            </Link>
+            </Link> */}
+            <span
+              onClick={onForgotPassword}
+              className="text-indigo-600 hover:underline"
+            >
+              Forgot Password?
+            </span>
           </div>
           <div>
             Don't have an account?{" "}

@@ -3,11 +3,13 @@ import { useSelector } from "react-redux"
 import {FaTimes} from 'react-icons/fa'
 import Login from "../pages/Login";
 import Register from "../pages/register";
+import ForgotPassword from "../pages/ForgotPassword";
 
 
 function AuthModel({onClose}) {
     const userData=useSelector((state)=>state.action);
     const [view, setView] = useState("login");
+    const [email, setEmail] = useState("");
 
     useEffect(()=>{
         if(userData){
@@ -21,11 +23,25 @@ function AuthModel({onClose}) {
         <FaTimes size={16} />
       </button>
 
-      {view === "login" ? (
-          <Login isModel={true} onSwitchToRegister={() => setView("register")} />
-        ) : (
+      {view === "login" && (
+          <Login isModel={true} 
+            onSwitchToRegister={() => setView("register")}
+            onForgotPassword={() => setView("forgot-password")} />
+        ) } 
+
+      {view === "register" && (
           <Register isModel={true} onSwitchToLogin={() => setView("login")} />
         )}
+
+      {view === "forgot-password" && (
+        <ForgotPassword
+          isModel={true}
+            onSuccess={(email) => {
+                setEmail(email);
+                setView("otp");
+            }}
+        />
+    )}
       
      
     </div>

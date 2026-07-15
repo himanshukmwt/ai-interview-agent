@@ -130,6 +130,9 @@ export const googleLogin=async(req,res)=>{
 export const forgetPassword=async(req,res)=>{
   try{
     const {email}=req.body;
+    if(!email){
+      return res.status(400).json({message:"Enter a valid email"});
+    }
 
     const user=await User.findOne({email});
 

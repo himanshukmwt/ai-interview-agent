@@ -9,6 +9,7 @@ import { setUserData } from "./redux/userSlice";
 import InterviewPage from "./pages/InterviewPage"
 import InterviewHistory from "./pages/InterviewHistory";
 import InterviewReport from "./pages/InterviewReport";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   const dispatch=useDispatch();
@@ -31,6 +32,7 @@ function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword/>}/>
       <Route path="/interview" element={<InterviewPage/>}/>
       <Route path="/history" element={<InterviewHistory/>}/>
       <Route path="/report/:id" element={<InterviewReport/>}/>
