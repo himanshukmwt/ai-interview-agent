@@ -150,5 +150,38 @@ export const forgetPassword=async(req,res)=>{
     console.error(error);
     res.status(500).json({ message: "Something went wrong" });
   }
-}
+};
+
+export const verifyOtp=async(req,res)=>{
+  try{
+    const{email,otp}=req.body;
+
+    const user=await User.findOne({email});
+
+    if(!user || !user.resetOtp){
+      return res.status(400).json({message:"Invalid request"});
+    }
+
+    if(user.resetOtp !== Number(otp)){
+      return res.status(400).json({message:"Invalid otp"});
+    }
+
+    if(user.resetOtpExpiry <new Date){
+      return res.status(400).json("Otp Expired");
+    }
+
+    const resetToken=setUser(user);
+
+    return res.status(200).json({
+      message:"Otp Verified",
+      resetToken,
+    });
+
+  }catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+
 
