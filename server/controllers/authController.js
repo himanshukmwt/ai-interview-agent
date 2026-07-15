@@ -127,12 +127,9 @@ export const googleLogin=async(req,res)=>{
   }
 };
 
-export const forgetPassword=async(req,res)=>{
+export const forgotPassword=async(req,res)=>{
   try{
     const {email}=req.body;
-    if(!email){
-      return res.status(400).json({message:"Enter a valid email"});
-    }
 
     const user=await User.findOne({email});
 
@@ -151,7 +148,7 @@ export const forgetPassword=async(req,res)=>{
     res.status(200).json({ message: "OTP sent to your email" });
   }catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Something went wrong" });
+    res.status(500).json({error });
   }
 };
 

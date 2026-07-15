@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../services/api.js";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice.js";
@@ -94,12 +94,6 @@ function Login({ isModel = false, onSwitchToRegister, onForgotPassword }) {
 
         <div className="mt-4 text-center text-sm text-gray-500 space-y-2">
           <div>
-            {/* <Link
-              to="/forgot-password"
-              className="text-indigo-600 hover:underline"
-            >
-              Forgot Password?
-            </Link> */}
             <span
               onClick={onForgotPassword}
               className="text-indigo-600 hover:underline"

@@ -10,6 +10,7 @@ import InterviewPage from "./pages/InterviewPage"
 import InterviewHistory from "./pages/InterviewHistory";
 import InterviewReport from "./pages/InterviewReport";
 import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtp from "./pages/VerifyOTP";
 
 function App() {
   const dispatch=useDispatch();
@@ -33,6 +34,7 @@ function App() {
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword/>}/>
+      <Route path="/verify-otp" element={<VerifyOtp/>}/>
       <Route path="/interview" element={<InterviewPage/>}/>
       <Route path="/history" element={<InterviewHistory/>}/>
       <Route path="/report/:id" element={<InterviewReport/>}/>

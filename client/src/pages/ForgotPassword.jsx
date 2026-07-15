@@ -4,23 +4,19 @@ import { forgotPassword } from "../services/api";
 function ForgotPassword({ isModel=false,onBack, onSuccess }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setmessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setError("");
+    setmessage("");
     setLoading(true);
     try {
-      if(!email){
-        setError("Enter a valid email");
-      }
-      await forgotPassword(email);
+      await forgotPassword({email});
 
       onSuccess(email);
-
     } catch (err) {
-      setError(
+      setmessage(
         err.response?.data?.message || "Something went wrong"
       );
     } finally {
@@ -52,9 +48,9 @@ function ForgotPassword({ isModel=false,onBack, onSuccess }) {
           placeholder="yourname123@gmail.com"
         />
 
-        {error && (
+        {message && (
           <p className="text-red-600 text-md mb-3 text-center bg-red-100">
-            {error}
+            {message}
           </p>
         )}
 
@@ -73,7 +69,7 @@ function ForgotPassword({ isModel=false,onBack, onSuccess }) {
           className="w-full mt-3 text-md text-indigo-500 hover:underline cursor-pointer"
         >
 
-         <p> Back to Login</p>
+          Back to Login
         </button>
       </form>
     </div>
