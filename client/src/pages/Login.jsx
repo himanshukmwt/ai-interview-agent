@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { login } from "../services/api.js";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice.js";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 
-function Login({ isModel = false, onSwitchToRegister, onForgotPassword }) {
+function Login({ isModel = false, onSwitchToRegister, onForgotPassword,onClose }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,10 @@ function Login({ isModel = false, onSwitchToRegister, onForgotPassword }) {
       const res = await login(formData);
       dispatch(setUserData(res.data));
       setMessage({ text: res.data.message, type: "success" });
-      setTimeout(() => navigate("/"), 1000);
+      setTimeout(() => {
+    setMessage({ text: "", type: "" });
+    onClose();
+  }, 1000);
     } catch (err) {
       setMessage({
         text: err.response?.data?.message || "Something went wrong...",

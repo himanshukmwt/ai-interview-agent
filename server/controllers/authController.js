@@ -187,7 +187,7 @@ export const resetPassword=async(req,res)=>{
   try{
     const {resetToken,newPassword}=req.body;
 
-    if (!resetToken || !newPassword) {
+    if (!resetToken || !newPassword ) {
       return res.status(400).json({
         message: "Reset token and new password are required",
       });

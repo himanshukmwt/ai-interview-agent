@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/register";
 import ForgotPassword from "../pages/ForgotPassword";
 import VerifyOtp from "../pages/VerifyOTP";
+import ResetPassword from "../pages/ResetPassword";
 
 function AuthModel({ onClose }) {
   const userData = useSelector((state) => state.action);
@@ -30,6 +31,7 @@ function AuthModel({ onClose }) {
         {view === "login" && (
           <Login
             isModel={true}
+            onClose={onClose}
             onSwitchToRegister={() => setView("register")}
             onForgotPassword={() => setView("forgot-password")}
           />
@@ -58,6 +60,15 @@ function AuthModel({ onClose }) {
               setResetToken(token);
               setView("reset-password");
             }}
+          />
+        )}
+
+        {view === "reset-password" && (
+          <ResetPassword
+          isModel={true}
+            resetToken={resetToken}
+            onBack={() => setView("forgot-password")}
+            onSuccess={() => setView("login")}
           />
         )}
       </div>

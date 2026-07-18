@@ -11,6 +11,7 @@ import InterviewHistory from "./pages/InterviewHistory";
 import InterviewReport from "./pages/InterviewReport";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOTP";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const dispatch=useDispatch();
@@ -35,6 +36,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword/>}/>
       <Route path="/verify-otp" element={<VerifyOtp/>}/>
+      <Route path="/reset-Password" element={<ResetPassword/>}/>
       <Route path="/interview" element={<InterviewPage/>}/>
       <Route path="/history" element={<InterviewHistory/>}/>
       <Route path="/report/:id" element={<InterviewReport/>}/>
