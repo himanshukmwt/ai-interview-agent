@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
 import Login from "../pages/Login";
-import Register from "../pages/register";
+import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
 import VerifyOtp from "../pages/VerifyOTP";
 import ResetPassword from "../pages/ResetPassword";
