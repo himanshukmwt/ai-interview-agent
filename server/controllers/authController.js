@@ -13,6 +13,16 @@ export const handleUserSignup= async(req, res) =>{
     if (existing) {
       return res.status(400).json({ message: "User already exist" });
     }
+
+    // const otp=Math.floor(100000+ Math.random() * 900000);
+    // const otpExpiry=new Date(Date.now()+ 10*60*1000);
+
+    // user.resetOtp = otp;
+    // user.resetOtpExpiry = otpExpiry;
+    // await user.save();
+
+    // await sendOtpEmail(email,otp);
+    
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       name,
