@@ -8,7 +8,7 @@ import VerifyOtp from "../pages/VerifyOTP";
 import ResetPassword from "../pages/ResetPassword";
 
 function AuthModel({ onClose }) {
-  const userData = useSelector((state) => state.action);
+  const {userData} = useSelector((state) => state.user);
   const [view, setView] = useState("login");
   const [email, setEmail] = useState("");
   const [resetToken, setResetToken]=useState("");

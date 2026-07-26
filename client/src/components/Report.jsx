@@ -195,8 +195,8 @@ function Report({ report }) {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-indigo-200 px-4 sm:px-6 lg:px-10 py-5">
-      <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 ">
-        <div className="sm-10 w-full flex items-start gap-4 flex-wrap">
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 ">
+        <div className="w-full flex items-start gap-4 flex-wrap">
           <button
             onClick={() => navigate("/history")}
             className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition"
@@ -205,16 +205,16 @@ function Report({ report }) {
           </button>
 
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 flex-nowrap">
+            <h3 className="text-2xl font-bold text-gray-800 flex-nowrap">
               Interview Dashboard
-            </h1>
-            <p className="text-gray-500 mt-2">Performance</p>
+            </h3>
+            <p className="text-gray-500 mt-1">Performance</p>
           </div>
         </div>
 
         <button 
         onClick={downloadPDF}
-        className="bg-amber-900 hover:bg-amber-700 text-white py-2.5 px-5 rounded-lg shadow-md transition-all duration-300 font-semibold text-sm sm:text-base text-nowrap">
+        className="bg-amber-600 hover:bg-amber-700 text-white py-2.5 px-5 rounded-lg shadow-md transition-all duration-300 font-semibold text-sm sm:text-base text-nowrap cursor-pointer">
           Download PDF
         </button>
       </div>
@@ -229,7 +229,7 @@ function Report({ report }) {
             <h3 className="text-gray-500 mb-4 text-sm sm:text-base">
               Overall Performance
             </h3>
-            <div className="relative w-20 h-20 sm:w-25 sm:h-25 max-auto">
+            <div className="relative w-20 h-20 sm:w-25 sm:h-25 mx-auto">
               <CircularProgressbar
                 value={percentage}
                 text={`${score}/10`}

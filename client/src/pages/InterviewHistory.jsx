@@ -21,14 +21,14 @@ function InterviewHistory() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-100 py-10">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-100 py-6">
       <div className="w-[90vw] lg:w-[70vw] max-w-[90%] mx-auto">
-        <div className="mb-10 w-full flex items-start gap-4 flex-wrap">
+        <div className="-ml-15 mb-8 w-full flex items-start gap-4 flex-wrap">
           <button
             onClick={() => navigate("/")}
-            className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition"
+            className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition cursor-pointer"
           >
-            <FaArrowLeft className="text-gray-300" />
+            <FaArrowLeft className="text-gray-500" />
           </button>
 
           <div>
@@ -51,14 +51,14 @@ function InterviewHistory() {
               <div
                 key={index}
                 onClick={() => navigate(`/report/${item._id}`)}
-                className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200"
+                className="bg-white px-7 py-3  rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">
                       {item.role}
                     </h3>
-                    <p className="text-gray-500 text-sm mt-1">
+                    <p className="text-gray-500 text-sm mt-1 line-clamp-2">
                       {item.experience} - {item.mode}
                     </p>
                     <p className="text-xs text-gray-400 mt-2">
