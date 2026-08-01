@@ -72,14 +72,14 @@ function SetUp({ onStart }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4"
+      className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200 px-4"
     >
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl grid md:grid-cols-2 overflow-hidden">
         <motion.div
           initial={{ x: -80, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="relative bg-gradient-to-br from-blue-50 to-blue-100 p-12 flex flex-col justify-center"
+          className="relative bg-linear-to-br from-blue-50 to-blue-100 p-12 flex flex-col justify-center"
         >
           <h2 className="text-4xl font-bold text-gray-800 mb-6">
             Start Your AI Interview
@@ -123,9 +123,9 @@ function SetUp({ onStart }) {
           initial={{ x: 80, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="p-8 bg-amber-50"
+          className="px-8 py-4 bg-amber-50"
         >
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Interview SetUp
           </h2>
           <div className="space-y-3">
@@ -208,7 +208,7 @@ function SetUp({ onStart }) {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-2"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-5 py-3 space-y-2"
               >
                 <h3 className="text-lg font-semibold text-gray-800">
                   Resume Analysis Result
@@ -245,7 +245,7 @@ function SetUp({ onStart }) {
               disabled={!role || !experience || loading}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full disabled:bg-gray-500 bg-blue-400 hover:bg-blue-500 text-white py-2.5 rounded-full text-lg font-semibold transition duration-300 shadow-md cursor-pointer"
+              className="w-full disabled:bg-gray-400 bg-blue-400 hover:bg-blue-500 text-white py-2.5 rounded-full text-lg font-semibold transition duration-300 shadow-md cursor-pointer"
             >
               {loading ? "Starting...":"Start Interview"}
             </motion.button>
