@@ -299,8 +299,8 @@ useEffect(()=>{
 
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-300 via-white to-purple-300 flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-350 min-h-[80vh] bg-white rounded-3xl shadow-2xl border border-gray-200 flex flex-col lg:flex-row overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-indigo-200 via-white to-purple-200 flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-260 min-h-[80vh] bg-white rounded-3xl shadow-2xl border border-gray-200 flex flex-col lg:flex-row overflow-hidden">
         {/* video section */}
         <div className="w-full lg:w-[35%] bg-white flex flex-col items-center p-6 space-y-6 border-r border-gray-200">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-xl">
@@ -325,6 +325,7 @@ useEffect(()=>{
 
 
           {/* timer */}
+          {!subtitle && (
           <div className="w-full max-w-md bg-white border border-gary-200 rounded-2xl shadow-md p-6 space-y-5">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Interview Status</span>
@@ -352,15 +353,17 @@ useEffect(()=>{
               </div>
             </div>
           </div>
+          )}
         </div>
+        
 
         {/* Text-section */}
         <div className="flex-1 flex flex-col p-4 sm:p-6 md:p-d relative">
-          <h2 className="text-xl sm:text-2xl font-bold text-blue-600 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-indigo-600 mb-4">
             AI Interview Assistant
           </h2>
 
-          {!isIntroPhase && (<div className="relative mb-6 bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm">
+          {!isIntroPhase && (<div className="relative mb-4 bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-sm">
             <p className="text-xs sm:text-sm text-gray-400 mb-2">
               Question {currentIndex+1} of {questions.length}
             </p>
@@ -396,11 +399,11 @@ useEffect(()=>{
             <motion.div
             initial={{opacity:0}}
             animate={{opacity:1}}
-            className="mt-6 bg-amber-100 border border-indigo-400 p-5 rounded-2xl shadow-sm">
+            className="mt-6 bg-gray-100 border border-indigo-400 p-5 rounded-2xl shadow-sm">
                 <p className="text-gray-700 font-medium mb-4">{feedback}</p>
                 <button 
                 onClick={handleNext}
-                className="w-full bg-blue-400 text-white py-3 rounded-xl flex items-center justify-center gap-1 shadow-md hover:opacity-90 transition ">
+                className="w-full bg-indigo-400 text-white py-3 rounded-xl flex items-center justify-center gap-1 shadow-md hover:opacity-90 transition cursor-pointer">
                   Next Question <FaArrowRight size={18}/>
                 </button>
             </motion.div>

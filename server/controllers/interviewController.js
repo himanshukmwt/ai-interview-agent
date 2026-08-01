@@ -27,7 +27,6 @@ export const analyzeresume = async (req, res) => {
       resumeText += pageText + "\n";
     }
     resumeText = resumeText.replace(/\s+/g, " ").trim();
-    console.log(resumeText);
 
     const messages = [
       {
@@ -146,9 +145,9 @@ export const generateQuestion = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (user.credits < -100) {
-      return res.status(400).json({ message: "Not enough credits." });
-    }
+    // if (user.credits < -100) {
+    //   return res.status(400).json({ message: "Not enough credits." });
+    // }
     
     const projectText =
       Array.isArray(projects) && projects.length ? projects.join(", ") : "None";
@@ -221,8 +220,8 @@ export const generateQuestion = async (req, res) => {
       return res.status(500).json({ message: "Failed to generate questions" });
     }
 
-    user.credits -= 1;
-    await user.save();
+    // user.credits -= 1;
+    // await user.save();
 
     const interview = await Interview.create({
       userId: user._id,

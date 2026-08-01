@@ -6,6 +6,7 @@ import connectDB from "./config/connectDB.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import interviewRouter from "./routes/interviewRoutes.js";
+import dashboardRouter from "./routes/dashboardRoutes.js"
 import cookieParser from "cookie-parser";
 
 const app=express();
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use("/api/auth",authRouter);
 app.use("/api/user",userRouter);
 app.use("/api/interview",interviewRouter);
+app.use("/api/dashboard",dashboardRouter);
 
 app.listen(PORT,()=>{
     console.log(`Server started on port ${PORT}`)
