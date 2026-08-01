@@ -27,6 +27,7 @@ export const analyzeresume = async (req, res) => {
       resumeText += pageText + "\n";
     }
     resumeText = resumeText.replace(/\s+/g, " ").trim();
+    console.log(resumeText);
 
     const messages = [
       {
@@ -38,10 +39,56 @@ export const analyzeresume = async (req, res) => {
 
                 {
                   "role":"string",
-                  "experience":"string",
+                  "experience":"Fresher | 1-2 years | 3-5 years | 5-8 years | 8+ years",
                   "projects":["project1","project2"],
                   "skills":["skills1","skills2"],
                 }
+
+                Rules:
+
+                1. "role" should contain the candidate's primary target job role.
+                  Example:
+                  - Backend Developer
+                  - Full Stack Developer
+                  - Java Developer
+
+                2. "experience" should NOT be the experience summary.
+
+                Calculate the TOTAL professional work experience by summing the duration of ALL full-time jobs listed in the Work Experience section.
+
+                Example:
+
+                Job 1:
+                July 2023 - Present
+
+                Job 2:
+                July 2022 - June 2023
+
+                Total = 4 years
+
+                Return:
+                "3-5 years"
+
+                Do NOT use only the latest job.
+                Do NOT use the Professional Summary.
+
+                Map the result using these rules:
+
+                - No professional experience, student, internship only → "Fresher"
+                - More than 0 and up to 2 years → "1-2 years"
+                - More than 2 and up to 5 years → "3-5 years"
+                - More than 5 and up to 8 years → "5-8 years"
+                - More than 8 years → "8+ years"
+
+                Do NOT guess.
+                Do NOT return any other value.
+                Do NOT return sentences.
+                Return ONLY one of:
+                "Fresher"
+                "1-2 years"
+                "3-5 years"
+                "5-8 years"
+                "8+ years"
                 `,
       },
       {

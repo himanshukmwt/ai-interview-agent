@@ -11,7 +11,7 @@ import AuthModel from './AuthModel';
 function Navbar() {
     const navigate=useNavigate();
     const {userData}=useSelector((state)=>state.user);
-    const [showCreditPopup,setShowCreditPopup]=useState(false);
+    // const [showCreditPopup,setShowCreditPopup]=useState(false);
     const [showUserPopup,setShowUserPopup]=useState(false);
     const [showLogin, setShowLogin]=useState(false);
 
@@ -20,7 +20,7 @@ function Navbar() {
         try {
             await logout();
             dispatch(setUserData(null));
-            setShowCreditPopup(false);
+            // setShowCreditPopup(false);
             setShowUserPopup(false);
             navigate("/");
         } catch (error) {
@@ -29,16 +29,16 @@ function Navbar() {
     }
   return (
     <div className='bg-amber-50 flex justify-center px-4 pt-4'>
-        <div className='w-full max-w-6xl bg-white rounded-[24px] border border-gray-200 px-8 py-4 flex justify-between items-center relative'>
+        <div className='w-full max-w-6xl bg-white rounded-3xl border border-gray-200 px-8 py-4 flex justify-between items-center relative'>
             <div className='flex items-center gap-3 cursor-pointer'>
-                <div className='bg-black text-white p-2 rounded-[8px]'>
+                <div className='bg-black text-white p-2 rounded-lg'>
                     <BsRobot size={18}/>
                 </div>
                 <h1 className='font-semibold hidden md:block text-lg'>InterviewPrep</h1>
 
             </div>
             <div className='flex items-center gap-6 relative'>
-                <div onClick={()=>{
+                {/* <div onClick={()=>{
                     if(!userData){
                         setShowLogin(true);
                         return;
@@ -54,14 +54,14 @@ function Navbar() {
                             <p className='text-sm text-gray-600 mb-4'>You've reached your daily interview limit. Your credits will refresh tomorrow. Please come back then to continue</p>
                         </div>   
                     )}
-                </div>
+                </div> */}
                 <div className='relative'>
                     <button onClick={()=>{
                          if(!userData){
                         setShowLogin(true);
                         return;
                     }
-                        setShowUserPopup(!showUserPopup); setShowCreditPopup(false)}}className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold cursor-pointer'>
+                        setShowUserPopup(!showUserPopup); }}className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold cursor-pointer'>
                         {userData?.name
   ? userData.name.charAt(0).toUpperCase()
   : <FaUserAstronaut />}

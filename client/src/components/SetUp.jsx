@@ -15,7 +15,7 @@ function SetUp({ onStart }) {
   const userData=useSelector((state)=>state.action);
   const dispatch=useDispatch();
   const [role, setRole] = useState("");
-  const [experience, setExperience] = useState("");
+  const [experience, setExperience] = useState("Fresher");
   const [mode, setMode] = useState("Technical");
   const [resumeFile, setResumeFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -133,8 +133,8 @@ function SetUp({ onStart }) {
               <FaUserTie className="absolute top-4 left-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Enter role"
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition"
+                placeholder="Software Engineer"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-1 focus:ring-blue-300 outline-none transition"
                 onChange={(e) => setRole(e.target.value)}
                 value={role}
               />
@@ -142,19 +142,30 @@ function SetUp({ onStart }) {
 
             <div className="relative">
               <FaBriefcase className="absolute top-4 left-4 text-gray-400" />
-              <input
+              {/* <input
                 type="text"
-                placeholder="Experience (e.g 3 years)"
+                placeholder="Experience (e.g 1-3 Years)"
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition"
                 onChange={(e) => setExperience(e.target.value)}
                 value={experience}
-              />
+              /> */}
+              <select
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full py-3 pl-12 pr-4 border border-gray-200 rounded-xl focus:ring-1 focus:ring-blue-300 outline-none transition text-gray-600 cursor-pointer"
+            >
+              <option value="Fresher">Fresher</option>
+              <option value="1-2 years">1-2 years</option>
+               <option value="3-5 years">3-5 years</option>
+                <option value="5-8 years">5-8 years</option>
+                 <option value="8+ years">8+ years</option>
+            </select>
             </div>
 
             <select
               value={mode}
               onChange={(e) => setMode(e.target.value)}
-              className="w-full py-3 px-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition text-gray-600 cursor-pointer"
+              className="w-full py-3 px-4 border border-gray-200 rounded-xl focus:ring-1 focus:ring-blue-300 outline-none transition text-gray-600 cursor-pointer"
             >
               <option value="Technical">Technical Interview</option>
               <option value="HR">HR Interview</option>
@@ -163,7 +174,7 @@ function SetUp({ onStart }) {
             {!analysisDone && (
               <motion.div
                 onClick={() => document.getElementById("resumeUpload").click()}
-                className="border-2 border-dashed border-gray-300 rounded-xl p-5 text-center cursor-pointer hover:border-blue-400 hover:border-blue-100 transition"
+                className="border-2 border-dashed border-gray-300 rounded-xl p-5 text-center cursor-pointer hover:border-blue-400 transition"
               >
                 <FaFileUpload className="text-4xl mx-auto text-blue-300 mb-3" />
                 <input
@@ -186,7 +197,7 @@ function SetUp({ onStart }) {
                       e.stopPropagation();
                       handleUploadResume();
                     }}
-                    className="mt-4 bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition"
+                    className="mt-4 bg-gray-500 text-white px-5 py-2 rounded-xl hover:bg-gray-600 transition cursor-pointer"
                   >
                     {analyzing ? "Analyzing..." : "Analyze Resume"}
                   </motion.button>

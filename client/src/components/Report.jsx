@@ -194,7 +194,7 @@ function Report({ report }) {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-indigo-200 px-4 sm:px-6 lg:px-10 py-5">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-indigo-200 px-4 sm:px-6 lg:px-10 py-3.5">
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 ">
         <div className="w-full flex items-start gap-4 flex-wrap">
           <button
@@ -220,13 +220,13 @@ function Report({ report }) {
       </div>
 
       <div className="grid grid:cols-1 lg:grid-cols-3 gap-6">
-        <div className="space-y-6">
+        <div className="space-y-3.5">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-6 text-center"
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:py-3 px-6 text-center"
           >
-            <h3 className="text-gray-500 mb-4 text-sm sm:text-base">
+            <h3 className="text-gray-700 font-semibold mb-3 text-sm sm:text-base">
               Overall Performance
             </h3>
             <div className="relative w-20 h-20 sm:w-25 sm:h-25 mx-auto">
@@ -235,14 +235,14 @@ function Report({ report }) {
                 text={`${score}/10`}
                 styles={buildStyles({
                   textSize: "20px",
-                  pathColor: "#ff34aa",
+                  pathColor: "#22c55e",
                   textColor: "#000000",
-                  trailColor: "#808080",
+                  trailColor: "#C0C0C0",
                 })}
               />
             </div>
 
-            <div className="mt-4">
+            <div className="mt-2">
               <p className="font-semibold text-gray-800 text-sm sm:text-base">
                 {performanceText}
               </p>
@@ -256,13 +256,13 @@ function Report({ report }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white roundec-2xl sm:rounded-3xl shadow-lg p-6 sm:p-8"
+            className="bg-white roundec-2xl sm:rounded-3xl shadow-lg p-6 sm:py-4 px-8"
           >
-            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6 sm:mb-3">
               Skill Evaluation
             </h3>
 
-            <div className="space-y-5">
+            <div className="space-y-3">
               {skills.map((s, i) => (
                 <div key={i}>
                   <div className="flex justify-between mb-2 text-sm sm:text-base">
@@ -282,17 +282,17 @@ function Report({ report }) {
           </motion.div>
         </div>
 
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-6"
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:px-6 py-4"
           >
-            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-5">
               Preformance Trend
             </h3>
 
-            <div className="h-64 sm:h-72">
+            <div className="h-64 sm:h-55">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={questionData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -314,18 +314,18 @@ function Report({ report }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:p-8"
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-5 sm:px-8 py-4"
           >
-            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-6 sm:mb-3">
               Questions
             </h3>
-            <div className="space-y-6">
+            <div className="space-y-5">
               {questionWiseScore.map((q, i) => (
                 <div
                   key={i}
-                  className="bg-gray-50 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200"
+                  className="bg-gray-50 p-4 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl border border-gray-200"
                 >
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-2">
                     <div>
                       <p className="text-xs text-gray-400">Question {i + 1}</p>
 
@@ -338,7 +338,7 @@ function Report({ report }) {
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 border border-indigo-200 p-4 rounded-lg">
+                  <div className="bg-blue-50 border border-indigo-200 p-4 sm:p-3 rounded-lg">
                     <p className="text-xs text-blue-500 font-semibold mb-1">
                       Feedback
                     </p>
