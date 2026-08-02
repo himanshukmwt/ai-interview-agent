@@ -12,6 +12,7 @@ import InterviewReport from "./pages/InterviewReport";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOTP";
 import ResetPassword from "./pages/ResetPassword";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const dispatch=useDispatch();
@@ -40,6 +41,7 @@ function App() {
       <Route path="/interview" element={<InterviewPage/>}/>
       <Route path="/history" element={<InterviewHistory/>}/>
       <Route path="/report/:id" element={<InterviewReport/>}/>
+      <Route path="/dashboard" element={<Dashboard/>}/>
     </Routes>
     </BrowserRouter>
   )

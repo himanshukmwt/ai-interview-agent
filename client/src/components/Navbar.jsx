@@ -72,6 +72,9 @@ function Navbar() {
                             <button onClick={()=>navigate("/history")} className='w-full text-left text-sm py-2 hover:text-black text-gray-400 cursor-pointer'>
                                 Interview History
                             </button>
+                            <button onClick={()=>navigate("/dashboard")} className='w-full text-left text-sm py-2 hover:text-black text-gray-400 cursor-pointer'>
+                                Dashboard
+                            </button>
                             <button onClick={handleLogout} className='w-full text-left text-sm py-2 flex items-center gap-2 text-red-500 cursor-pointer'>
                                 <HiOutlineLogout size={16}/>
                                 Logout</button>
