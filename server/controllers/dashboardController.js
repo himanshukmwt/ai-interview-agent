@@ -17,7 +17,7 @@ export const analytics = async (req, res) => {
     const avgScore =
     totalInterviews === 0
     ? 0
-    :interviews.reduce((sum, i) => sum + i.finalScore) / totalInterviews;
+    :interviews.reduce((sum, i) => sum + i.finalScore,0) / totalInterviews;
 
     let confidence = 0;
     let communication = 0;
