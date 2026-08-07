@@ -161,6 +161,7 @@ function Report({ report }) {
 
       body: questionWiseScore.map((q, i) => [
         `${i + 1}`,
+        // `${q.question}\n\nAnswer: ${q.answer || "Not submitted"}`,
         q.question,
         `${q.score}/10`,
         q.feedback,
@@ -199,7 +200,7 @@ function Report({ report }) {
         <div className="w-full flex items-start gap-4 flex-wrap">
           <button
             onClick={() => navigate("/history")}
-            className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition"
+            className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition cursor-pointer"
           >
             <FaArrowLeft className="text-gray-500" />
           </button>
@@ -337,6 +338,12 @@ function Report({ report }) {
                       {q.score ?? 0}/10
                     </div>
                   </div>
+                  {/* <div>
+
+                      <p className="font-semibold text-gray-800 text-sm sm:text-base leading-relaxed">
+                        {q.answer || "Answer not available"}
+                      </p>
+                    </div> */}
 
                   <div className="bg-blue-50 border border-indigo-200 p-4 sm:p-3 rounded-lg">
                     <p className="text-xs text-blue-500 font-semibold mb-1">

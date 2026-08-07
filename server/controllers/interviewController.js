@@ -248,10 +248,23 @@ export const generateQuestion = async (req, res) => {
 
 export const submitAnswer = async (req, res) => {
   try {
-    const { interviewId, questionIndex, answer, timeTaken } = req.body;
+    const { interviewId, questionIndex, answer, timeTaken, isFollowUp } = req.body;
 
     const interview = await Interview.findById(interviewId);
-    const question = interview.questions[questionIndex]; //question is a schema
+    if (!interview) {
+  return res.status(404).json({ message: "Interview not found" });
+}
+    // const question = interview.questions[questionIndex]; //question is a schema
+
+    let question;
+
+    if(isFollowUp){
+        question = interview.questions.find(q =>
+          q.isFollowUp && Number(q.parentQuestion)===Number(questionIndex))
+
+    }else{
+        question = interview.questions[questionIndex];
+    }
 
     if (!answer) {
       question.score = 0;
@@ -466,7 +479,7 @@ export const getInterviewReport = async (req, res) => {
 
 export const generateFollowUp = async (req, res) => {
   try {
-    const { interviewId, question, answer, role, mode } = req.body;
+    const { interviewId, question, answer,questionIndex  } = req.body;
 
     const interview = await Interview.findOne({
       _id: interviewId,
@@ -478,6 +491,11 @@ export const generateFollowUp = async (req, res) => {
         message: "Interview not found",
       });
     }
+
+    const role = interview.role;
+    const mode = interview.mode;
+
+    
 
     if (!question || !answer) {
       return res.status(400).json({
@@ -537,8 +555,9 @@ export const generateFollowUp = async (req, res) => {
     ];
 
     const aiResponse = await askAI(messages);
+    const cleaned = aiResponse.replace(/```json|```/g, "").trim();
 
-    const result = JSON.parse(aiResponse);
+    const result = JSON.parse(cleaned);
 
     if (!result.followUp) {
       return res.json(result);
@@ -549,6 +568,7 @@ export const generateFollowUp = async (req, res) => {
       difficulty: "medium",
       timeLimit: 60,
       isFollowUp: true,
+      parentQuestion:questionIndex 
     });
 
     await interview.save();

@@ -45,9 +45,14 @@ const questionSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    
     isFollowUp: {
         type: Boolean,
         default: false,
+    },
+
+    parentQuestion:{
+        type:Number 
     }
 });
 

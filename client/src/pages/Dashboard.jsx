@@ -98,7 +98,7 @@ function Dashboard() {
               Avg Score
             </p>
             <p className="text-xl font-semibold text-center text-gray-600">
-              {dashboard.avgScore}/10
+              {dashboard.avgScore.toFixed(2)}/10
             </p>
           </div>
 
@@ -107,7 +107,7 @@ function Dashboard() {
               Best Score
             </p>
             <p className="text-xl font-semibold text-center text-gray-600">
-              {dashboard.highestScore}/10
+              {dashboard.highestScore.toFixed(2)}/10
             </p>
           </div>
 
@@ -116,7 +116,7 @@ function Dashboard() {
               Confidence
             </p>
             <p className="text-xl font-semibold text-center text-gray-600">
-              {dashboard.confidence}/10
+              {dashboard.confidence.toFixed(2)}/10
             </p>
           </div>
         </div>
@@ -149,7 +149,7 @@ function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span>Confidence</span>
-                  <span>{dashboard.confidence * 10}%</span>
+                  <span>{(dashboard.confidence * 10).toFixed(2)}%</span>
                 </div>
 
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -166,7 +166,7 @@ function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span>Communication</span>
-                  <span>{dashboard.communication * 10}%</span>
+                  <span>{(dashboard.communication * 10).toFixed(2)}%</span>
                 </div>
 
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -183,7 +183,7 @@ function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span>Correctness</span>
-                  <span>{dashboard.correctness * 10}%</span>
+                  <span>{(dashboard.correctness * 10).toFixed(2)}%</span>
                 </div>
 
                 <div className="w-full bg-gray-200 rounded-full h-2.5">

@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import Timer from "./Timer";
 import {  FaArrowRight, FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
-import { finishInterview, submitAns } from "../services/api";
+import { finishInterview, generateFollowUp, submitAns } from "../services/api";
 
 function Interview({ interviewData, onFinish }) {
   const {interviewId, questions,userName}=interviewData;
@@ -25,6 +25,10 @@ function Interview({ interviewData, onFinish }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [voiceGender, setVoiceGender] = useState("female");
   const [subtitle, setSubtitle] = useState("");
+
+  const [isFollowUp, setIsFollowUp] = useState(false);
+  const [followUpQuestion, setFollowUpQuestion] = useState(null);
+  const [isSpeakingSequence, setIsSpeakingSequence] = useState(false);
 
   
   const currentQuestion=questions[currentIndex];
@@ -119,7 +123,7 @@ const stopMic=()=>{
 
       utterance.onend = () => {
         videoRef.current?.pause();
-        videoRef.current.currntTime =0;
+        videoRef.current.currentTime =0;
         setIsAIPlaying(false);
       
         if(isMicOn){
@@ -152,12 +156,14 @@ const stopMic=()=>{
 
     }
     else if(currentQuestion){
+      setIsSpeakingSequence(true);
       await new Promise(r => setTimeout(r,800));
 
       if(currentIndex === questions.length -1){
         await speakText("Alright, this one might be a bit more challenging");
       }
       await speakText(currentQuestion.question);
+      setIsSpeakingSequence(false);
 
       // if(isMicOn){
       //     startMic();
@@ -183,7 +189,7 @@ const stopMic=()=>{
     },1000);
 
     return ()=>clearInterval(timer);
-  },[isIntroPhase, currentIndex]);
+  },[isIntroPhase, currentIndex,isFollowUp]);
 
   useEffect(() => {
   if (!isIntroPhase && currentQuestion) {
@@ -234,20 +240,70 @@ const submitAnswer=async()=>{
       interviewId,
       questionIndex:currentIndex,
       answer,
-      timeTaken: currentQuestion.timeLimit-timeLeft
+      timeTaken: currentQuestion.timeLimit-timeLeft,
+      isFollowUp
+
     });
     setFeedback(result.data.feedback);
     speakText(result.data.feedback);
     setIsSubmitting(false);
+    setIsSpeakingSequence(true);
   }catch(error){
     console.log(error);
     setIsSubmitting(false);
   }
 };
 
+useEffect(() => {
+  if (!isFollowUp || !followUpQuestion) return;
+  (async () => {
+    setIsSpeakingSequence(true);
+    setTimeLeft(currentQuestion?.timeLimit || 60); 
+    await speakText(followUpQuestion);
+    setIsSpeakingSequence(false);
+  })();
+}, [isFollowUp, followUpQuestion]);
+
+const followUp=async(answeredText)=>{
+  if (isFollowUp) {
+
+        setIsFollowUp(false);
+        setFollowUpQuestion("");
+        return false;
+    }
+
+      try {
+        const res = await generateFollowUp({
+            interviewId,
+            question: currentQuestion.question,
+            answer:answeredText,
+            questionIndex: currentIndex
+        });
+        if (res.data.followUp) {
+            setIsFollowUp(true);
+            setFollowUpQuestion(res.data.question);
+            return true;
+
+        }
+         return false;
+
+    } catch (err) {
+
+        console.log(err);
+        return false;
+
+    }
+}
 const handleNext=async()=>{
+  const answeredText = answer;
   setAnswer("");
   setFeedback("");
+
+  const hasFollowUp = await followUp(answeredText);
+
+    if (hasFollowUp) {
+        return;
+    }
 
   if(currentIndex +1 >=questions.length){
     finishInter();
@@ -325,7 +381,7 @@ useEffect(()=>{
 
 
           {/* timer */}
-          {!subtitle && (
+          {!isSpeakingSequence && (
           <div className="w-full max-w-md bg-white border border-gary-200 rounded-2xl shadow-md p-6 space-y-5">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Interview Status</span>
@@ -345,7 +401,10 @@ useEffect(()=>{
             <div className="grid grid-cols-2 gap-6 text-center">
               <div>
                 <span className="text-2xl font-bold text-blue-600">{currentIndex+1}</span>
-                <span className="text-xs text-gray-400">Current Questions</span>
+                <span className="text-xs text-gray-400">
+                  Current Question{isFollowUp ? " (Follow-up)" : ""}
+                </span>
+                
               </div>
               <div>
                 <span className="text-2xl font-bold text-blue-600">{questions.length}</span>
@@ -365,10 +424,13 @@ useEffect(()=>{
 
           {!isIntroPhase && (<div className="relative mb-4 bg-gray-50 p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-sm">
             <p className="text-xs sm:text-sm text-gray-400 mb-2">
-              Question {currentIndex+1} of {questions.length}
+              {/* Question {currentIndex+1} of {questions.length} */}
+              {isFollowUp
+    ? `Follow-up to Question ${currentIndex + 1}`
+    : `Question ${currentIndex + 1} of ${questions.length}`}
             </p>
             <div className="text-base sm:text-lg font-semibold text-gray-800  leading-relaxed">
-              {currentQuestion?.question}
+              {isFollowUp ? followUpQuestion: currentQuestion?.question}
             </div>
           </div>)}
 
