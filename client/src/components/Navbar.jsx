@@ -28,7 +28,7 @@ function Navbar() {
         }
     }
   return (
-    <div className='bg-amber-50 flex justify-center px-4 pt-4'>
+    <div className='bg-[#F7F6FE] flex justify-center px-4 pt-4'>
         <div className='w-full max-w-6xl bg-white rounded-3xl border border-gray-200 px-8 py-4 flex justify-between items-center relative'>
             <div className='flex items-center gap-3 cursor-pointer'>
                 <div className='bg-black text-white p-2 rounded-lg'>

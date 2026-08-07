@@ -163,8 +163,8 @@ function SetUp({ onStart }) {
             Interview Setup
           </h2>
           <div className="space-y-3">
-            <div className="relative">
-              <FaUserTie className="absolute top-4 left-4 text-gray-400" />
+            <div className="relative ">
+              <FaUserTie className="absolute top-5 left-4 text-gray-400" />
               <input
                 type="text"
                 placeholder="Software Engineer"
@@ -176,7 +176,7 @@ function SetUp({ onStart }) {
             </div>
 
             <div className="relative">
-              <FaBriefcase className="absolute top-4 left-4 text-gray-400" />
+              <FaBriefcase className="absolute top-5 left-4 text-gray-400" />
               <select
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
