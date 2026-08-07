@@ -132,7 +132,6 @@ export const generateQuestion = async (req, res) => {
     experience = experience?.trim();
     mode = mode?.trim();
 
-    
     if (!role || !experience || !mode) {
       return res
         .status(400)
@@ -140,7 +139,7 @@ export const generateQuestion = async (req, res) => {
     }
 
     const user = await User.findById(req.user._id);
-  
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -148,7 +147,7 @@ export const generateQuestion = async (req, res) => {
     // if (user.credits < -100) {
     //   return res.status(400).json({ message: "Not enough credits." });
     // }
-    
+
     const projectText =
       Array.isArray(projects) && projects.length ? projects.join(", ") : "None";
 
@@ -196,7 +195,7 @@ export const generateQuestion = async (req, res) => {
                 Question 5 → hard
 
                 Make questions based on the candidate's role, experience,interviewMode, projects, skills, and resume details.
-                `
+                `,
       },
       {
         role: "user",
@@ -238,7 +237,7 @@ export const generateQuestion = async (req, res) => {
 
     res.json({
       interviewId: interview._id,
-      creditsLeft: user.credits,
+      // creditsLeft: user.credits,
       userName: user.name,
       questions: interview.questions,
     });
@@ -411,12 +410,11 @@ export const finishInterview = async (req, res) => {
   }
 };
 
-
-export const getMyInterviews=async(req,res)=>{
+export const getMyInterviews = async (req, res) => {
   try {
-    const interviews=await Interview.find({userId:req.user._id})
-    .sort({createdAt:-1})
-    .select("role experience mode finalScore status createdAt");
+    const interviews = await Interview.find({ userId: req.user._id })
+      .sort({ createdAt: -1 })
+      .select("role experience mode finalScore status createdAt");
 
     return res.status(200).json(interviews);
   } catch (error) {
@@ -424,15 +422,15 @@ export const getMyInterviews=async(req,res)=>{
   }
 };
 
-export const getInterviewReport=async(req,res)=>{
+export const getInterviewReport = async (req, res) => {
   try {
-      const interview=await Interview.findById(req.params.id);
+    const interview = await Interview.findById(req.params.id);
 
-      if(!interview){
-        return res.status(404).json({message:"Interview not found"});
-      }
+    if (!interview) {
+      return res.status(404).json({ message: "Interview not found" });
+    }
 
-      const totalQuestions = interview.questions.length;
+    const totalQuestions = interview.questions.length;
 
     let totalConfidence = 0;
     let totalCommunication = 0;
@@ -443,7 +441,6 @@ export const getInterviewReport=async(req,res)=>{
       totalCommunication += q.communication || 0;
       totalCorrectness += q.correctness || 0;
     });
-
 
     const avgConfidence = totalQuestions ? totalConfidence / totalQuestions : 0;
 
@@ -460,9 +457,104 @@ export const getInterviewReport=async(req,res)=>{
       confidence: Number(avgConfidence.toFixed(1)),
       communication: Number(avgCommunication.toFixed(1)),
       correctness: Number(avgCorrectness.toFixed(1)),
-      questionWiseScore: interview.questions
+      questionWiseScore: interview.questions,
     });
   } catch (error) {
     return res.status(500).json({ message: error });
-   }
-}
+  }
+};
+
+export const generateFollowUp = async (req, res) => {
+  try {
+    const { interviewId, question, answer, role, mode } = req.body;
+
+    const interview = await Interview.findOne({
+      _id: interviewId,
+      userId: req.user._id,
+    });
+
+    if (!interview) {
+      return res.status(404).json({
+        message: "Interview not found",
+      });
+    }
+
+    if (!question || !answer) {
+      return res.status(400).json({
+        message: "Question and answer are required.",
+      });
+    }
+
+    const messages = [
+      {
+        role: "system",
+        content: `
+        You are an experienced interviewer.
+
+        Speak in simple, natural English.
+
+        The candidate has just answered one interview question.
+
+        Your task is to decide whether a follow-up question is needed.
+
+        Ask a follow-up ONLY IF:
+        - the answer is incomplete
+        - clarification is needed
+        - the candidate mentioned an important concept worth exploring
+        - deeper understanding should be tested
+
+        If the answer is already complete and satisfactory, return:
+
+        {
+          "followUp": false,
+          "question": ""
+        }
+
+        Otherwise return:
+
+        {
+          "followUp": true,
+          "question": "one natural follow-up interview question"
+        }
+
+        Rules:
+        - Ask only ONE follow-up question.
+        - Maximum 20 words.
+        - Do not repeat the previous question.
+        - Keep it conversational.
+        - Return ONLY valid JSON.
+        `,
+      },
+      {
+        role: "user",
+        content: `
+          Previous Question:${question}
+          Candidate Answer:${answer}
+          Role:${role}
+          Interview Mode:${mode}
+    `,
+      },
+    ];
+
+    const aiResponse = await askAI(messages);
+
+    const result = JSON.parse(aiResponse);
+
+    if (!result.followUp) {
+      return res.json(result);
+    }
+
+    interview.questions.push({
+      question: result.question,
+      difficulty: "medium",
+      timeLimit: 60,
+      isFollowUp: true,
+    });
+
+    await interview.save();
+
+    return res.json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};

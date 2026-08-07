@@ -22,6 +22,7 @@ export const submitAns=(data)=>api.post("/interview/submit-answer",data);
 export const finishInterview=(data)=>api.post("/interview/finish",data);
 export const getMyInterviews=()=>api.get("/interview/get-interview");
 export const getInterviewReport=(id)=>api.get(`/interview/report/${id}`);
+export const generateFollowUp = (data) =>api.post("/interview/follow-up", data);
 
 export const getDashboard=()=>api.get("/dashboard");
 
