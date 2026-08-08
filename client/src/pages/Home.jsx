@@ -307,12 +307,20 @@ import {
    Mic,
     TrendingUp,
     Sparkles,
+  FileText,
+  Target,
+  Download,
+  Clock,
+  BarChart3,
+  Lock,
+  ArrowRight,
   
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AuthModel from "../components/AuthModel";
 import heroImage from "../assets/hero.png";
+import dashboard from "../assets/dashboard.png";
 
 import Footer from "../components/Footer";
 import { BarChart } from "recharts";
@@ -344,6 +352,49 @@ const steps = [
   },
 ];
 
+const features = [
+  {
+    icon: Sparkles,
+    title: "AI Follow-up Questions",
+    desc: "Get relevant follow-up questions based on your answers.",
+  },
+  {
+    icon: FileText,
+    title: "Resume Based Interview",
+    desc: "Personalized questions generated from your uploaded resume.",
+  },
+  {
+    icon: Mic,
+    title: "Voice & Tone Analysis",
+    desc: "AI analyzes your voice, tone, pace and confidence in real-time.",
+  },
+  {
+    icon: Target,
+    title: "Performance Insights",
+    desc: "Detailed analysis with scores and actionable improvement tips.",
+  },
+  {
+    icon: Download,
+    title: "Download PDF Report",
+    desc: "Get a comprehensive interview report to track your progress.",
+  },
+  {
+    icon: Clock,
+    title: "Real-time Simulation",
+    desc: "Timer based real interview environment to build real confidence.",
+  },
+  {
+    icon: BarChart3,
+    title: "History & Analytics",
+    desc: "Track your performance over time with beautiful charts and analytics.",
+  },
+  {
+    icon: Lock,
+    title: "Multiple Modes",
+    desc: "HR Interview, Technical Interview and Confidence Practice modes.",
+  },
+];
+
 function DottedArrow() {
   return (
     <div className="hidden md:flex items-center absolute top-1/2 -right-10 -translate-y-1/2">
@@ -371,22 +422,22 @@ function DottedArrow() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
-            <Sparkles size={12} /> AI Powered Interview Coach
+          <span className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 text-sm font-semibold px-3 py-1.5 rounded-full mb-5">
+            <Sparkles size={14} /> AI Powered Interview Coach
           </span>
  
-          <h1 className="text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight mb-5 text-slate-900">
+          <h1 className="text-4xl sm:text-6xl font-bold leading-[1.1] tracking-tight mb-5 text-slate-900">
             Ace Your Next
             <br />
             Interview with <span className="text-indigo-600">AI</span>
           </h1>
  
-          <p className="text-slate-500 text-base leading-relaxed mb-7 max-w-md">
+          <p className="text-slate-500 text-base sm:text-xl leading-relaxed mb-7 max-w-md">
             Realistic mock interviews, intelligent follow-ups, voice analysis
             and actionable feedback to help you crack your dream job.
           </p>
  
-          <div className="flex flex-wrap gap-3 mb-8">
+          {userData ? (<div className="flex flex-wrap gap-4 mb-8">
             <button onClick={() => {
                   if (!userData) {
                     setShowLogin(true);
@@ -394,7 +445,7 @@ function DottedArrow() {
                   }
                   navigate("/interview");
                 }}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-6 py-3 rounded-xl transition shadow-sm shadow-indigo-200 cursor-pointer">
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-7 py-4 rounded-xl transition shadow-sm shadow-indigo-200 cursor-pointer">
               
               Start Interview
             </button>
@@ -406,11 +457,25 @@ function DottedArrow() {
               }
               navigate("/dashboard");
               }}
-                className="flex items-center gap-2 border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold text-sm px-6 py-3 rounded-xl transition cursor-pointer">
+                className="flex items-center gap-2 border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold text-sm px-7 py-4 rounded-xl transition cursor-pointer">
               <BarChart size={16} className="text-indigo-600" />
               View Dashboard
             </button>
           </div>
+          ):(
+
+              <div>
+                <button
+                   onClick={()=>{
+                        setShowLogin(true);
+                        return;
+                    }}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-xl cursor-pointer  text-white font-semibold px-6 py-3 rounded-xl transition flex items-center gap-2"
+                >
+                   Get Started <ArrowRight size={22} />
+                </button>
+              </div>
+            )}
             
         </motion.div>
  
@@ -419,7 +484,7 @@ function DottedArrow() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="relative"
+          className="relative lg:scale-120"
         >
           <div className="relative pt-10 px-10 min-h-[420px] overflow-hidden">
             <img
@@ -434,7 +499,7 @@ function DottedArrow() {
     </section>
 
 
-     <section className="py-10 bg-gray-50 rounded-3xl">
+     <section className="py-10 bg-white rounded-3xl">
       <div className="max-w-6xl mx-auto px-6 lg:px-10">
         <div className="text-center mb-12">
           <p className="text-xs font-bold tracking-wide text-indigo-600 mb-2">
@@ -475,6 +540,101 @@ function DottedArrow() {
               {i < steps.length - 1 && <DottedArrow />}
             </motion.div>
           ))}
+        </div>
+      </div>
+    </section>
+
+
+     <section className="py-10 bg-white mt-6 rounded-3xl">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+        <div className="text-center mb-12">
+          <p className="text-xs font-bold tracking-wide text-indigo-600 mb-2">
+            POWERFUL FEATURES
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+            Everything You Need to Succeed
+          </h2>
+        </div>
+ 
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {features.map((f, i) => (
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: (i % 4) * 0.06 }}
+              className="border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-indigo-100 transition"
+            >
+              <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center mb-4">
+                <f.icon size={17} className="text-indigo-600" />
+              </div>
+              <h3 className="font-semibold text-sm text-slate-800 mb-1.5">
+                {f.title}
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                {f.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+      <section id="dashboard" className="py-10 bg-white rounded-3xl mt-6">
+      <div className="max-w-6xl mx-auto px-6 lg:px-10">
+        <div className="bg-slate-50 rounded-3xl p-8 lg:p-12 grid lg:grid-cols-2 gap-10 items-center">
+          
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-xs font-bold tracking-wide text-indigo-600 mb-3">
+              TRACK &amp; IMPROVE
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight mb-4 leading-tight text-slate-900">
+              Your Personal
+              <br />
+              Interview Dashboard
+            </h2>
+            <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-sm">
+              Monitor your progress, strengths, improvement areas and
+              interview history in one place.
+            </p>
+            <button 
+            onClick={() => {
+              if (!userData) {
+                setShowLogin(true);
+                return;
+              }
+              navigate("/dashboard");
+              }}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition cursor-pointer">
+              Explore Dashboard <ArrowRight size={14} />
+            </button>
+          </motion.div>
+ 
+
+          <motion.div
+            initial={{ opacity: 0, x: 16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="w-full bg-white shadow-lg border border-slate-100 overflow-hidden lg:scale-150"
+          >
+            <img
+              src={dashboard}
+              alt="Interview dashboard preview"
+              className="w-full h-auto block "
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+                e.currentTarget.nextElementSibling.style.display = "flex";
+              }}
+            />
+           
+          </motion.div>
         </div>
       </div>
     </section>

@@ -65,7 +65,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBF8EF] p-8">
+    <div className="min-h-screen bg-[#F7F6FE] p-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span>Confidence</span>
-                  <span>{(dashboard.confidence * 10).toFixed(2)}%</span>
+                  <span>{(dashboard.confidence * 10).toFixed(1)}%</span>
                 </div>
 
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -166,7 +166,7 @@ function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span>Communication</span>
-                  <span>{(dashboard.communication * 10).toFixed(2)}%</span>
+                  <span>{(dashboard.communication * 10).toFixed(1)}%</span>
                 </div>
 
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -183,7 +183,7 @@ function Dashboard() {
               <div>
                 <div className="flex justify-between mb-1">
                   <span>Correctness</span>
-                  <span>{(dashboard.correctness * 10).toFixed(2)}%</span>
+                  <span>{(dashboard.correctness * 10).toFixed(1)}%</span>
                 </div>
 
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
