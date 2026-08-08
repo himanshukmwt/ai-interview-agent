@@ -31,8 +31,8 @@ function Navbar() {
     <div className='bg-[#F7F6FE] flex justify-center px-4 pt-4'>
         <div className='w-full max-w-6xl bg-white rounded-3xl border border-gray-200 px-8 py-4 flex justify-between items-center relative'>
             <div className='flex items-center gap-3 cursor-pointer'>
-                <div className='bg-black text-white p-2 rounded-lg'>
-                    <BsRobot size={18}/>
+                <div className='bg-indigo-500 text-white py-2 px-3 rounded-lg'>
+                    <p className='font-bold'>IP</p>
                 </div>
                 <h1 className='font-semibold hidden md:block text-lg'>InterviewPrep</h1>
 
@@ -61,7 +61,7 @@ function Navbar() {
                         setShowLogin(true);
                         return;
                     }
-                        setShowUserPopup(!showUserPopup); }}className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold cursor-pointer'>
+                        setShowUserPopup(!showUserPopup); }}className='w-9 h-9 bg-indigo-500 text-white rounded-full flex items-center justify-center font-semibold cursor-pointer'>
                         {userData?.name
   ? userData.name.charAt(0).toUpperCase()
   : <FaUserAstronaut />}
