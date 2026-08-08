@@ -1,5 +1,5 @@
-import maleVideo from "../assets/videos/male-ai.mp4";
-import femaleVideo from "../assets/videos/female-ai.mp4";
+import maleAvatar from "../assets/male-ai.png";
+import femaleAvatar from "../assets/female-ai.png";
 import { motion } from "motion/react";
 import Timer from "./Timer";
 import {  FaArrowRight, FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
@@ -20,7 +20,7 @@ function Interview({ interviewData, onFinish }) {
   const [timeLeft, setTimeLeft] = useState(
     questions[0]?.timeLimit || 60
   );
-  const videoRef = useRef(null);
+
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [voiceGender, setVoiceGender] = useState("female");
@@ -75,7 +75,7 @@ function Interview({ interviewData, onFinish }) {
     window.speechSynthesis.onvoiceschanged=loadVoices;
   },[]);
 
-  const videoSource=voiceGender==="male"?maleVideo:femaleVideo;
+  const avatarSource=voiceGender==="male"?maleAvatar:femaleAvatar;
 
 
   const startMic=()=>{
@@ -118,12 +118,9 @@ const stopMic=()=>{
       utterance.onstart = () => {
         setIsAIPlaying(true);
         stopMic();
-        videoRef.current?.play();
       };
 
       utterance.onend = () => {
-        videoRef.current?.pause();
-        videoRef.current.currentTime =0;
         setIsAIPlaying(false);
       
         if(isMicOn){
@@ -174,8 +171,9 @@ const stopMic=()=>{
   },[selectedVoice , isIntroPhase , currentIndex]);
 
   useEffect(()=>{
-    if(isIntroPhase)return;
-    if(!currentQuestion)return;
+    if (isIntroPhase || isSpeakingSequence || !currentQuestion) {
+    return;
+  }
     // if(isSubmitting)return;
 
     const timer=setInterval(()=>{
@@ -189,7 +187,7 @@ const stopMic=()=>{
     },1000);
 
     return ()=>clearInterval(timer);
-  },[isIntroPhase, currentIndex,isFollowUp]);
+  },[isIntroPhase,isSpeakingSequence, currentIndex,isFollowUp]);
 
   useEffect(() => {
   if (!isIntroPhase && currentQuestion) {
@@ -355,18 +353,20 @@ useEffect(()=>{
 
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-200 via-white to-purple-200 flex items-center justify-center p-4 sm:p-6">
+    <div className="min-h-screen bg-[#F7F6FE] flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-260 min-h-[80vh] bg-white rounded-3xl shadow-2xl border border-gray-200 flex flex-col lg:flex-row overflow-hidden">
         {/* video section */}
         <div className="w-full lg:w-[35%] bg-white flex flex-col items-center p-6 space-y-6 border-r border-gray-200">
           <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-xl">
-            <video src={videoSource} 
-                    key={videoSource}
-                    ref={videoRef}
-                    muted
-                    playsInline
-                    preload="auto"
-            className="w-full h-auto object-cover" />
+
+            <img
+              src={avatarSource}
+              key={avatarSource}
+              alt="AI Interviewer"
+              className={`w-full h-[250px] object-cover transition-transform duration-500 ${
+                isAIPlaying ? "scale-105" : "scale-100"
+              }`}
+            />
           </div>
 
           {/* subtitle */}
@@ -381,7 +381,7 @@ useEffect(()=>{
 
 
           {/* timer */}
-          {!isSpeakingSequence && (
+          {!isIntroPhase && !isSpeakingSequence && (
           <div className="w-full max-w-md bg-white border border-gary-200 rounded-2xl shadow-md p-6 space-y-5">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500">Interview Status</span>

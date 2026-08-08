@@ -194,6 +194,12 @@ function Report({ report }) {
     doc.save("AI_Interview_Report.pdf");
   };
 
+     const getBarColor = (score) => {
+    if (score <= 3) return "#D85A30";
+    if (score <= 6) return "#EF9F27";
+    return "#63A46B";
+  };
+
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-indigo-200 px-4 sm:px-6 lg:px-10 py-3.5">
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 ">
@@ -215,7 +221,7 @@ function Report({ report }) {
 
         <button 
         onClick={downloadPDF}
-        className="bg-amber-600 hover:bg-amber-700 text-white py-2.5 px-5 rounded-lg shadow-md transition-all duration-300 font-semibold text-sm sm:text-base text-nowrap cursor-pointer">
+        className="bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-5 rounded-lg shadow-md transition-all duration-300 font-semibold text-sm sm:text-base text-nowrap cursor-pointer">
           Download PDF
         </button>
       </div>
@@ -236,7 +242,7 @@ function Report({ report }) {
                 text={`${score}/10`}
                 styles={buildStyles({
                   textSize: "20px",
-                  pathColor: "#22c55e",
+                  pathColor: getBarColor(score),
                   textColor: "#000000",
                   trailColor: "#C0C0C0",
                 })}
@@ -273,8 +279,10 @@ function Report({ report }) {
 
                   <div className="bg-gray-200 h-2 sm:h-3 rounded-full">
                     <div
-                      className="bg-green-500 h-full rounded-full"
-                      style={{ width: `${s.value * 10}%` }}
+                      className=" h-full rounded-full"
+                      style={{ width: `${s.value * 10}%` ,
+                        backgroundColor: getBarColor(s.value)}}
+                      
                     ></div>
                   </div>
                 </div>
@@ -303,8 +311,8 @@ function Report({ report }) {
                   <Area
                     type="monotone"
                     dataKey="score"
-                    stroke="#22c55e"
-                    fill="#bbf7d0"
+                    stroke="#4f46e5"
+                    fill="#c7d2fe"
                     strokeWidth={3}
                   />
                 </AreaChart>

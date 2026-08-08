@@ -7,13 +7,13 @@ function Footer() {
       
       
       <div className="flex justify-center items-center gap-3 mb-2">
-        <div className="bg-black text-white p-2 rounded-lg">
-          <BsRobot size={16} />
+        <div className="bg-indigo-500 text-white py-1 px-2 rounded-lg">
+          <p className="text-sm font-semibold">IP</p>
         </div>
         <h2 className="font-semibold text-gray-300">InterviewPrep</h2>
       </div>
 
-      <p className="text-gray-500 text-sm max-w-xl mx-auto text-center mb-4">
+      <p className="text-gray-400 text-sm max-w-xl mx-auto text-center mb-4">
         AI-powered interview preparation platform designed to improve
         communication skills, technical depth and professional confidence.
       </p>

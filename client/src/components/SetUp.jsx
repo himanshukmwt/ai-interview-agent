@@ -95,12 +95,11 @@ function SetUp({ onStart }) {
              AI Powered Interview Platform
           </div>
           <h1 className="text-4xl font-bold leading-tight text-gray-900">
-            Ace Your Next
+            Prepare for Your  
             <span className="text-indigo-600">{" "} AI Interview</span>
           </h1>
           <p className="text-md text-gray-500 leading-8 max-w-lg">
-            Practice realistic interviews powered by AI. Receive smart follow-up
-            questions, instant feedback, and detailed performance analytics.
+            Choose your role, experience level and interview type to start your personalized practice session.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-6 items-center">

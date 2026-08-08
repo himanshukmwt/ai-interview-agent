@@ -20,8 +20,10 @@ function InterviewHistory() {
     getInterview();
   }, []);
 
+
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-100 py-6">
+    <div className="min-h-screen bg-[#F7F6FE] py-6">
       <div className="w-[90vw] lg:w-[70vw] max-w-[90%] mx-auto">
         <div className="-ml-15 mb-8 w-full flex items-start gap-4 flex-wrap">
           <button
@@ -69,7 +71,12 @@ function InterviewHistory() {
                   <div className="flex items-center gap-6">
                     {/* score */}
                     <div className="text-right">
-                      <p className="text-xl font-bold text-emerald-600">
+                      <p className={`text-xl font-bold 
+                        ${ item.finalScore >= 7 ? "text-green-600"
+                            : item.finalScore >= 4
+                            ? "text-yellow-600"
+                            : "text-red-500"
+                                    }`}>
                         {item.finalScore || 0}/10
                       </p>
                       <p className="text-xs text-gray-400">Overall Score</p>
@@ -80,8 +87,8 @@ function InterviewHistory() {
                       className={`px-4 py-1 rounded-full text-xs font-medium *
                                         ${
                                           item.status === "Completed"
-                                            ? "bg-amber-50 text-emerald-600"
-                                            : "bg-yellow-100 text-red-500"
+                                            ? "bg-emerald-50 text-emerald-600"
+                                            : "bg-red-100 text-red-500"
                                         }`}
                     >
                       {item.status}

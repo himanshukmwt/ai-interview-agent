@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {BsRobot} from 'react-icons/bs';
 import {FaUserAstronaut} from 'react-icons/fa';
 import {HiOutlineLogout} from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';

@@ -68,17 +68,17 @@ function Dashboard() {
     <div className="min-h-screen bg-[#F7F6FE] p-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => navigate("/")}
-              className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition cursor-pointer"
+              className="-ml-15 mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition cursor-pointer"
             >
               <FaArrowLeft className="text-gray-500" />
             </button>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           </div>
 
-          <p className="text-gray-500 mt-2 pl-12">
+          <p className="text-gray-500 mt-2 pl-12 -ml-13">
             Track your interview performance over time.
           </p>
         </div>
