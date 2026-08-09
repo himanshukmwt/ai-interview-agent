@@ -14,28 +14,87 @@ export const handleUserSignup= async(req, res) =>{
       return res.status(400).json({ message: "User already exist" });
     }
 
-    // const otp=Math.floor(100000+ Math.random() * 900000);
-    // const otpExpiry=new Date(Date.now()+ 10*60*1000);
+    const otp = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
-    // user.resetOtp = otp;
-    // user.resetOtpExpiry = otpExpiry;
-    // await user.save();
-
-    // await sendOtpEmail(email,otp);
+    const otpExpiry = new Date(
+      Date.now() + 10 * 60 * 1000
+    );
     
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       name,
       email,
       password: hashedPassword,
+      signupOtp: otp,
+      signupOtpExpiry: otpExpiry
     });
-    return res
-      .status(200)
-      .json({ message: "user signup successful", name, email });
+    await sendOtpEmail(email, otp);
+
+    return res.status(200).json({
+      message: "OTP sent to your email",
+      email
+    });
   } catch (error) {
     console.log(error);
   }
 }
+
+export const verifySignupOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({
+        message: "User is already verified"
+      });
+    }
+
+    if (!user.signupOtp || !user.signupOtpExpiry) {
+      return res.status(400).json({
+        message: "OTP not found"
+      });
+    }
+
+    if (user.signupOtpExpiry < new Date()) {
+      return res.status(400).json({
+        message: "OTP has expired"
+      });
+    }
+
+    if (user.signupOtp !== otp) {
+      return res.status(400).json({
+        message: "Invalid OTP"
+      });
+    }
+
+    user.isVerified = true;
+    user.signupOtp = undefined;
+    user.signupOtpExpiry = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Email verified successfully"
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Something went wrong"
+    });
+  }
+};
 
 export const handleUserLogin= async (req, res)=> {
   try {
@@ -106,8 +165,8 @@ export const googleLogin=async(req,res)=>{
         name,
         email,
         googleId,
-        profilePicture:picture,
-        authProvider:"google"
+        authProvider:"google",
+        isVerified:true,
       })
     }
     else if(user && !user.googleId){

@@ -19,9 +19,6 @@ const userSchema = new mongoose.Schema({
         unique: true,
         sparse: true,
     },
-    profilePicture: {
-        type: String,
-    },
     authProvider: {
         type: String,
         enum: ["local", "google"],
@@ -35,6 +32,16 @@ const userSchema = new mongoose.Schema({
         type: Number,
     },
     resetOtpExpiry: {
+        type: Date,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    signupOtp: {
+        type: Number,
+    },
+    signupOtpExpiry: {
         type: Date,
     },
 }, { timestamps: true });
