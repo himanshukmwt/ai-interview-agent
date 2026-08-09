@@ -47,7 +47,7 @@ export const handleUserLogin= async (req, res)=> {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.json({ err: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const token = setUser(user);

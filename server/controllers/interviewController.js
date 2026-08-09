@@ -28,6 +28,32 @@ export const analyzeresume = async (req, res) => {
     }
     resumeText = resumeText.replace(/\s+/g, " ").trim();
 
+    const text = resumeText.toLowerCase();
+
+    const resumeKeywords = [
+        "education",
+        "experience",
+        "skills",
+        "project",
+        "resume",
+        "developer",
+        "java",
+        "javascript",
+        "python",
+        "react",
+        "node"
+      ];
+
+      const isResume = resumeKeywords.some((keyword) =>
+        text.includes(keyword)
+      );
+
+      if (!isResume) {
+        return res.status(400).json({
+          message: "Please upload a valid resume."
+        });
+      }
+
     const messages = [
       {
         role: "system",
