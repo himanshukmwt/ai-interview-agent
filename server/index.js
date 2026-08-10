@@ -22,7 +22,7 @@ app.use(helmet());
 const PORT=process.env.PORT || 8100;
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "*",
     // origin: [
     //   "http://localhost:5173",
     // process.env.CLIENT_URL],

@@ -121,8 +121,8 @@ export const handleUserLogin= async (req, res)=> {
     const token = setUser(user);
     res.cookie("uid", token, {
       httpOnly: true,
-       secure: true,
-       sameSite: "None",
+       secure: process.env.NODE_ENV === "production",
+       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
     return res.status(200).json({
