@@ -15,6 +15,8 @@ import cookieParser from "cookie-parser";
 
 const app=express();
 
+app.set("trust proxy", 1);
+
 app.use(helmet());
 
 const PORT=process.env.PORT || 8100;
