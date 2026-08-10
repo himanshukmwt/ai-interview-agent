@@ -11,6 +11,7 @@ export const logout=()=>api.post("/auth/logout");
 export const googleLogin=(data)=>api.post("/auth/google",data);
 export const forgotPassword=(data)=>api.post("/auth/forgot-password",data);
 export const verifyOtp=(data)=>api.post("/auth/verify-otp",data);
+export const verifySignupOtp=(data)=>api.post("/auth/verify-signup-otp",data);
 export const resetPassword=(data)=>api.post("/auth/reset-password",data);
 
 export const currentUser=()=>api.get("/user/current-user");

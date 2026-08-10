@@ -1,4 +1,5 @@
 import User from "../models/userModel.js";
+import PendingSignup from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { getUser, setUser } from "../services/authServices.js";
 import { OAuth2Client } from "google-auth-library";
@@ -23,13 +24,11 @@ export const handleUserSignup= async(req, res) =>{
     );
     
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      signupOtp: otp,
-      signupOtpExpiry: otpExpiry
-    });
+    await PendingSignup.findOneAndUpdate(
+      { email },
+      { name, email, password: hashedPassword, otp, otpExpiry },
+      { upsert: true, new: true }
+    );
     await sendOtpEmail(email, otp);
 
     return res.status(200).json({
@@ -45,43 +44,41 @@ export const verifySignupOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
-    const user = await User.findOne({ email });
+    const pending = await PendingSignup.findOne({ email });
 
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found"
-      });
+    if (!pending) {
+      return res.status(400).json({ message: "No pending signup found for this email" });
     }
 
-    if (user.isVerified) {
-      return res.status(400).json({
-        message: "User is already verified"
-      });
-    }
 
-    if (!user.signupOtp || !user.signupOtpExpiry) {
+    if (!pending.otp || !pending.otpExpiry) {
       return res.status(400).json({
         message: "OTP not found"
       });
     }
 
-    if (user.signupOtpExpiry < new Date()) {
+    if (pending.otpExpiry < new Date()) {
       return res.status(400).json({
         message: "OTP has expired"
       });
     }
 
-    if (user.signupOtp !== otp) {
+    if (pending.otp !== otp) {
       return res.status(400).json({
         message: "Invalid OTP"
       });
     }
 
-    user.isVerified = true;
-    user.signupOtp = undefined;
-    user.signupOtpExpiry = undefined;
+    await User.create({
+      name: pending.name,
+      email: pending.email,
+      password: pending.password,
+      isVerified: true
+    });
 
-    await user.save();
+    await PendingSignup.deleteOne({
+      email
+    });
 
     return res.status(200).json({
       message: "Email verified successfully"
@@ -107,6 +104,11 @@ export const handleUserLogin= async (req, res)=> {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
+    }
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message: "Please verify your email first"
+      });
     }
 
     const token = setUser(user);

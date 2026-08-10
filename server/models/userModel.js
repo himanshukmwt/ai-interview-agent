@@ -38,15 +38,25 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    signupOtp: {
-        type: Number,
-    },
-    signupOtpExpiry: {
-        type: Date,
-    },
 }, { timestamps: true });
 
+
+const pendingSignupSchema = new mongoose.Schema({
+  name: String,
+  email: {
+    type: String,
+    unique: true
+  },
+  password: {
+        type: String,
+        default: null,
+  },
+  otp: String,
+  otpExpiry: Date
+});
+
 const User = mongoose.model('User', userSchema);
+const PendingSignup = mongoose.model('PendingSignup',pendingSignupSchema);
 
 export default User;
 

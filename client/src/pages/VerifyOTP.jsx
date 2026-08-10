@@ -1,8 +1,8 @@
 // pages/VerifyOtp.jsx
 import { useState, useRef } from "react";
-import { verifyOtp } from "../services/api";
+import { verifyOtp, verifySignupOtp } from "../services/api";
 
-function VerifyOtp({ isModel=false, email, onSuccess, onBack }) {
+function VerifyOtp({ isModel=false,mode, email, onSuccess, onBack }) {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [message, setmessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,8 +31,23 @@ function VerifyOtp({ isModel=false, email, onSuccess, onBack }) {
     setLoading(true);
     try {
       const otpValue = otp.join("");
-      const res = await verifyOtp({ email, otp: otpValue });
-      onSuccess(res.data.resetToken);
+      // const res = await verifyOtp({ email, otp: otpValue });
+      // onSuccess(res.data.resetToken);
+      if (mode === "signup") {
+  await verifySignupOtp({
+    email,
+    otp: otpValue
+  });
+
+  onSuccess();
+} else {
+  const res = await verifyOtp({
+    email,
+    otp: otpValue
+  });
+
+  onSuccess(res.data.resetToken);
+}
     } catch (err) {
       setmessage(err.response?.data?.message || "Invalid OTP");
     } finally {

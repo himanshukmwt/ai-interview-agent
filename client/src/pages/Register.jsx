@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/api.js";
 
-function Register({ isModel = false, onSwitchToLogin }) {
+function Register({ isModel = false, onSwitchToLogin, onSuccess }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ function Register({ isModel = false, onSwitchToLogin }) {
   });
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,9 +41,10 @@ function Register({ isModel = false, onSwitchToLogin }) {
       });
       setMessage({ text: res.data.message, type: "success" });
 
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
+      // setTimeout(() => {
+      //   navigate("/login");
+      // }, 1000);
+      onSuccess(formData.email);
     } catch (err) {
       setMessage({
         text: err.response?.data?.message || "Something went wrong..",

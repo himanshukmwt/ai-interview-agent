@@ -12,6 +12,7 @@ function AuthModel({ onClose }) {
   const [view, setView] = useState("login");
   const [email, setEmail] = useState("");
   const [resetToken, setResetToken]=useState("");
+  const [otpMode, setOtpMode] = useState(null);
 
   useEffect(() => {
     if (userData) {
@@ -38,7 +39,12 @@ function AuthModel({ onClose }) {
         )}
 
         {view === "register" && (
-          <Register isModel={true} onSwitchToLogin={() => setView("login")} />
+          <Register isModel={true} onSuccess={(email) => {
+              setEmail(email);
+              setOtpMode("signup");
+              setView("verify-otp");
+            }}
+            onSwitchToLogin={() => setView("login")} />
         )}
 
         {view === "forgot-password" && (
@@ -46,12 +52,13 @@ function AuthModel({ onClose }) {
             isModel={true}
             onSuccess={(email) => {
               setEmail(email);
+               setOtpMode("forgot-password");
               setView("verify-otp");
             }}
             onBack={()=>setView("login")}
           />
         )}
-        {view === "verify-otp" && (
+        {/* {view === "verify-otp" && (
           <VerifyOtp
           isModel={true}
             email={email}
@@ -61,7 +68,30 @@ function AuthModel({ onClose }) {
               setView("reset-password");
             }}
           />
-        )}
+        )} */}
+
+        {view === "verify-otp" && (
+  <VerifyOtp
+    isModel={true}
+    email={email}
+    mode={otpMode}
+    onBack={() =>
+      setView(
+        otpMode === "signup"
+          ? "register"
+          : "forgot-password"
+      )
+    }
+    onSuccess={(data) => {
+      if (otpMode === "signup") {
+        setView("login");
+      } else {
+        setResetToken(data);
+        setView("reset-password");
+      }
+    }}
+  />
+)}
 
         {view === "reset-password" && (
           <ResetPassword

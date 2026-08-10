@@ -1,5 +1,5 @@
 import express from "express";
-import { handleUserSignup ,handleUserLogin, handleUserLogout, googleLogin, forgotPassword, verifyOtp, resetPassword} from "../controllers/authController.js";
+import { handleUserSignup ,handleUserLogin, handleUserLogout, googleLogin, forgotPassword, verifyOtp, resetPassword, verifySignupOtp} from "../controllers/authController.js";
 import isAuth from "../middleware/isAuth.js";
 import rateLimit from "express-rate-limit";
 import { validate } from "../middleware/validate.js";
@@ -24,6 +24,7 @@ const authLimiter = rateLimit({
 const router=express.Router();
 
 router.post("/register",validate(registerSchema),handleUserSignup);
+router.post("/verify-signup-otp",verifySignupOtp);
 router.post("/login",authLimiter,validate(loginSchema),handleUserLogin);
 router.post("/logout",isAuth,handleUserLogout);
 router.post("/google",googleLogin);

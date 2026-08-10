@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { forgotPassword } from "../services/api";
 
-function ForgotPassword({ isModel=false,onBack, onSuccess }) {
+function ForgotPassword({ isModel=false, onBack, onSuccess }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setmessage] = useState("");
