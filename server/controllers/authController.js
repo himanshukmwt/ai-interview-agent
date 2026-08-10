@@ -1,5 +1,5 @@
-import User from "../models/userModel.js";
-import PendingSignup from "../models/userModel.js";
+import models from "../models/userModel.js";
+const { User, PendingSignup } = models;
 import bcrypt from "bcryptjs";
 import { getUser, setUser } from "../services/authServices.js";
 import { OAuth2Client } from "google-auth-library";
@@ -29,7 +29,14 @@ export const handleUserSignup= async(req, res) =>{
       { name, email, password: hashedPassword, otp, otpExpiry },
       { upsert: true, new: true }
     );
-    await sendOtpEmail(email, otp);
+    
+    try {
+      await sendOtpEmail(email, otp);
+    } catch (emailError) {
+      return res.status(502).json({
+        message: "Could not send OTP email. Please try again in a moment.",
+      });
+    }
 
     return res.status(200).json({
       message: "OTP sent to your email",

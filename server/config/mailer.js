@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { BrevoClient } from "@getbrevo/brevo";
 
 const brevo = new BrevoClient({
@@ -11,7 +13,7 @@ export const sendOtpEmail = async (email, otp) => {
 
       htmlContent: `
         <div style="font-family: Arial, sans-serif; max-width: 480px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-            <h2 style="color: #6d28d9;">Password Reset Request</h2>
+            <h2 style="color: #6d28d9;">Verification OTP</h2>
 
             <p>Use the OTP below to verify email. This OTP is valid for <b>10 minutes</b>.</p>
 

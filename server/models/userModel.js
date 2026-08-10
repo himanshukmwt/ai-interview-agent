@@ -52,11 +52,19 @@ const pendingSignupSchema = new mongoose.Schema({
         default: null,
   },
   otp: String,
-  otpExpiry: Date
+  otpExpiry: {
+    type: Date,
+    index: true,
+    expires: 0
+  }
 });
 
 const User = mongoose.model('User', userSchema);
 const PendingSignup = mongoose.model('PendingSignup',pendingSignupSchema);
 
-export default User;
+export default {
+    User,
+    PendingSignup
+}
+
 
