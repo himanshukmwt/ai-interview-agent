@@ -36,7 +36,6 @@ function SetUp({ onStart }) {
 
     try {
       const result = await resumeUPLOAD(formdata);
-      console.log(result);
 
       setRole(result.data.role || "");
       setExperience(result.data.experience || "");
@@ -47,7 +46,7 @@ function SetUp({ onStart }) {
 
       setAnalyzing(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setAnalyzing(false);
     }
   };

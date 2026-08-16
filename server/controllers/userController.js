@@ -1,4 +1,5 @@
-import User from "../models/userModel.js";
+import models from "../models/userModel.js";
+const {User} =models;
 
 export const getCurrentUser=async (req,res)=>{
     try {
@@ -10,6 +11,6 @@ export const getCurrentUser=async (req,res)=>{
         return res.status(200).json(user);
     } catch (error) {
         return res.status(500).json({message:`Failed to get current user ${error}`});
-        console.log(error);
+       
     }
 }

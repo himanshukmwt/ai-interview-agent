@@ -1,9 +1,8 @@
 import { getUser } from "../services/authServices.js";
 
  const isAuth=(req,res,next)=>{
-    console.log("COOKIES:", req.cookies);
-console.log("UID:", req.cookies?.uid);
-    const token=req.cookies?.uid;
+    const token=req.cookies?.uid ||
+  req.headers.authorization?.split(" ")[1];
 
     if(!token){
         return res.status(401).json({message:"Please login first"});

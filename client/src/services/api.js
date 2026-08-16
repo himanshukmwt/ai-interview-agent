@@ -5,6 +5,21 @@ const api=axios.create({
     withCredentials: true,  
 });
 
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export const register=(data)=> api.post("/auth/register",data);
 export const login=(data)=>api.post("/auth/login",data);
 export const logout=()=>api.post("/auth/logout");

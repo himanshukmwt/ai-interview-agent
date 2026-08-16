@@ -19,6 +19,7 @@ function Navbar() {
         try {
             await logout();
             dispatch(setUserData(null));
+            localStorage.removeItem("token");
             // setShowCreditPopup(false);
             setShowUserPopup(false);
             navigate("/");

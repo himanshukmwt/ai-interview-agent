@@ -23,15 +23,16 @@ function Login({ isModel = false, onSwitchToRegister, onForgotPassword,onClose }
     try {
       setLoading(true);
       const res = await login(formData);
+      localStorage.setItem("token", res.data.token);
       dispatch(setUserData(res.data));
       setMessage({ text: res.data.message, type: "success" });
       setTimeout(() => {
     setMessage({ text: "", type: "" });
     onClose();
   }, 1000);
-    } catch (err) {
+    } catch (message) {
       setMessage({
-        text: err.response?.data?.message || "Something went wrong...",
+        text: message.response?.data?.message || "Something went wrong...",
         type: "error",
       });
     } finally {

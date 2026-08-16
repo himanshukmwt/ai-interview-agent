@@ -119,12 +119,13 @@ export const handleUserLogin= async (req, res)=> {
     }
 
     const token = setUser(user);
-    res.cookie("uid", token, {
-      httpOnly: true,
-       secure: true,
-       sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    // res.cookie("uid", token, {
+    //   httpOnly: true,
+    //    secure: true,
+    //    sameSite: "none",
+    //   maxAge: 24 * 60 * 60 * 1000,
+    // });
+    res.setHeader("Authorization", `Bearer ${token}`);
     return res.status(200).json({
       message: "user login seccessfull",
       name: user.name,
@@ -138,9 +139,9 @@ export const handleUserLogin= async (req, res)=> {
 
 export const handleUserLogout=async(req,res)=>{
   try{
-        res.clearCookie("uid",{
-          httpOnly:true
-        });
+        // res.clearCookie("uid",{
+        //   httpOnly:true
+        // });
 
         return res.status(200).json({
             message: "Logged out successfully",

@@ -17,12 +17,19 @@ import Dashboard from "./pages/Dashboard";
 function App() {
   const dispatch=useDispatch();
   useEffect(()=>{
+    const token = localStorage.getItem("token");
+
+  if (!token) {
+    dispatch(setUserData(null));
+    return;
+  }
     const getUser=async()=>{
       try{
         const result=await currentUser();
         dispatch(setUserData(result.data));
       }catch(err){
         console.log(err);
+        localStorage.removeItem("token");
         dispatch(setUserData(null));
       }
     };

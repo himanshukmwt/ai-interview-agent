@@ -1,7 +1,8 @@
 import fs from "fs";
+import models from "../models/userModel.js";
+const {User} =models;
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { askAI } from "../services/openRouterServices.js";
-import User from "../models/userModel.js";
 import Interview from "../models/interviewModel.js";
 
 export const analyzeresume = async (req, res) => {
