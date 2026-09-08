@@ -52,6 +52,28 @@ function SetUp({ onStart }) {
   };
 
   const handleStart = async () => {
+
+    const validKeywords = [
+    "developer",
+    "engineer",
+    "analyst",
+    "programmer",
+    "designer",
+    "tester",
+    "architect",
+    "scientist"
+  ];
+
+  const isValidRole = validKeywords.some(keyword =>
+    role.toLowerCase().includes(keyword)
+  );
+
+  if (!isValidRole) {
+    alert(
+      "Please enter a valid job role, e.g. Software Engineer or Frontend Developer"
+    );
+    return;
+  }
     setLoading(true);
     try {
       const result = await startInterview({
@@ -62,7 +84,7 @@ function SetUp({ onStart }) {
         projects,
         skills,
       });
-      console.log(result.data);
+      // console.log(result.data);
       if (userData) {
         dispatch(setUserData({ ...userData, credits: result.data.creditLeft }));
       }

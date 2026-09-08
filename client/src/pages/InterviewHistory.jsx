@@ -25,7 +25,7 @@ function InterviewHistory() {
   return (
     <div className="min-h-screen bg-[#F7F6FE] py-6">
       <div className="w-[90vw] lg:w-[70vw] max-w-[90%] mx-auto">
-        <div className="-ml-15 mb-8 w-full flex items-start gap-4 flex-wrap">
+        <div className=" ml-1 md:-ml-13 mb-8 w-full flex items-start gap-4 flex-wrap">
           <button
             onClick={() => navigate("/")}
             className="mt-1 p-3 rounded-full bg-white shadow hover:shadow-md transition cursor-pointer"

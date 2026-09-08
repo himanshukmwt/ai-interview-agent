@@ -10,7 +10,9 @@ import connectDB from "./config/connectDB.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import interviewRouter from "./routes/interviewRoutes.js";
-import dashboardRouter from "./routes/dashboardRoutes.js"
+import dashboardRouter from "./routes/dashboardRoutes.js";
+// import transcribeRoute from './routes/transcribe.js';
+
 import cookieParser from "cookie-parser";
 
 const app=express();
@@ -19,7 +21,7 @@ app.set("trust proxy", 1);
 
 app.use(helmet());
 
-const PORT=process.env.PORT || 8100;
+const PORT=process.env.PORT || 8007;
 app.use(
   cors({
     //  origin: "http://localhost:5173",
@@ -48,6 +50,7 @@ app.use("/api/auth",authRouter);
 app.use("/api/user",userRouter);
 app.use("/api/interview",interviewRouter);
 app.use("/api/dashboard",dashboardRouter);
+// app.use('/api', transcribeRoute);
 
 app.listen(PORT,()=>{
     console.log(`Server started on port ${PORT}`)

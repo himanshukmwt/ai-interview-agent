@@ -20,3 +20,5 @@ function Timer({timeLeft,totalTime}) {
 }
 
 export default Timer
+
+

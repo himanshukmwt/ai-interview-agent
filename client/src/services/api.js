@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api=axios.create({
     baseURL: import.meta.env.VITE_API_URL,
+   
     withCredentials: true,  
 });
 
@@ -41,6 +42,14 @@ export const getInterviewReport=(id)=>api.get(`/interview/report/${id}`);
 export const generateFollowUp = (data) =>api.post("/interview/follow-up", data);
 
 export const getDashboard=()=>api.get("/dashboard");
+
+// export const transcribeAudio = (audioBlob) => {
+//   const formData = new FormData();
+//   formData.append("audio", audioBlob, "recording.webm");
+//   return api.post("/transcribe", formData, {
+//     headers: { "Content-Type": "multipart/form-data" },
+//   });
+// };
 
 
 export default api;
